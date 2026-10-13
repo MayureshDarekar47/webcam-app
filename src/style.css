@@ -304,75 +304,88 @@ select:focus-visible {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 0.75rem 1.25rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
-}
-
-/* Master Studio Workspace Container (Spans full laptop display) */
-.camera-workspace {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  padding: 0.5rem 0.75rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  padding: 0.85rem;
-  width: 100%;
 }
 
-/* Pro Laptop & Desktop 2-Column Studio Grid */
+/* Master Camera Workspace Container (FULL EDGE-TO-EDGE EXPANSIVE HERO) */
+.camera-workspace {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
 @media (min-width: 1024px) {
   .camera-workspace {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 350px;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
   }
 }
 
 @media (min-width: 1440px) {
   .camera-workspace {
-    grid-template-columns: minmax(0, 1fr) 380px;
-    gap: 1.15rem;
-    padding: 1.15rem;
+    width: 100%;
+    max-width: 100%;
   }
 }
 
-/* Studio Left Stage */
+/* Studio Center Stage */
 .studio-stage {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  min-width: 0;
-  height: 100%;
-  justify-content: space-between;
+  gap: 0.85rem;
+  width: 100%;
+  align-items: center;
 }
 
-/* Viewport Container (Optimized to fit laptop screens edge-to-edge with 16:9 aspect ratio) */
+/* Viewport Container (HERO CAMERA PREVIEW - FULL WIDTH EXPANSIVE VIEWPORT) */
 .camera-viewport-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: calc(100vh - 240px);
-  min-height: 330px;
-  background: #03050a radial-gradient(circle at center, #111827 0%, #03050a 100%);
+  min-height: 560px;
+  height: clamp(580px, calc(100vh - 100px), 960px);
+  background: #020409 radial-gradient(circle at center, #0f172a 0%, #020409 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.85), 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Subtle Vignette Overlay at the bottom so embedded controls are always crisp & high contrast */
+.camera-viewport-wrap::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 250px;
+  background: linear-gradient(to top, rgba(6, 9, 18, 0.92) 0%, rgba(6, 9, 18, 0.5) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 15;
+}
+
+@media (min-width: 1280px) {
+  .camera-viewport-wrap {
+    min-height: 600px;
+    height: clamp(600px, calc(100vh - 100px), 1020px);
+  }
 }
 
 @media (max-height: 820px) and (min-width: 1024px) {
   .camera-viewport-wrap {
-    max-height: calc(100vh - 215px);
-    min-height: 270px;
+    min-height: 520px;
+    height: calc(100vh - 85px);
   }
 }
 
@@ -408,7 +421,7 @@ select:focus-visible {
   background: radial-gradient(circle at center, #151a28 0%, #07090f 100%);
   color: var(--text-secondary);
   text-align: center;
-  padding: 2rem;
+  padding: 2rem 2rem 10.5rem; /* extra bottom padding so centered items don't overlap embedded dock */
   z-index: 10;
   transition: var(--transition-normal);
 }
@@ -734,104 +747,122 @@ select:focus-visible {
 
 
 /* ==========================================================================
-   PRIMARY STUDIO CONTROLS & DOCKED DECK
+   PRIMARY STUDIO CONTROLS & DOCKED DECK (COMPACT SINGLE-ROW COCKPIT)
    ========================================================================== */
 
 .studio-capture-bar {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-
-/* Central Shutter Deck */
-.capture-main-deck {
+  position: absolute;
+  bottom: 1.15rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  padding: 0.55rem 1rem;
-  gap: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  justify-content: center;
+  width: auto;
+  max-width: min(96vw, 1120px);
+  margin: 0;
+  padding: 0;
+  z-index: 25;
+  pointer-events: auto;
 }
 
-/* Mode Selector */
+/* Master Compact Cockpit Dock - Balanced & Centered */
+.capture-main-deck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 14, 25, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  padding: 0.42rem 1.25rem;
+  gap: 1rem;
+  width: auto;
+  max-width: min(96vw, 1120px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.deck-wing {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.deck-wing.deck-left {
+  justify-content: flex-end;
+}
+
+.deck-wing.deck-right {
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+/* Mode Selector (Integrated on Left Wing) */
 .mode-selector {
   display: inline-flex;
-  background: var(--bg-primary);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  padding: 0.25rem;
+  padding: 0.2rem;
   gap: 0.2rem;
 }
 
 .mode-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.95rem;
+  gap: 0.35rem;
+  padding: 0.32rem 0.85rem;
   border-radius: var(--radius-full);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--text-secondary);
-  transition: var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
 }
 
 .mode-btn:hover {
-  color: var(--text-primary);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .mode-btn.active {
   background: var(--bg-surface-elevated);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  border: 1px solid var(--border-subtle);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-.mode-key {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.1rem 0.35rem;
-  border-radius: 4px;
-  color: var(--text-muted);
-}
-
-.mode-btn.active .mode-key {
-  color: #93c5fd;
-  background: rgba(59, 130, 246, 0.25);
-}
-
-/* Shutter & Recording Action Group */
+/* Center Hero: Shutter & Recording Buttons (Compact Ergonomic Size) */
 .capture-controls-group {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.6rem;
+  flex-shrink: 0;
 }
 
-/* Tactical Shutter Button for Photos */
 .btn-capture-shutter {
-  width: 66px;
-  height: 66px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: #ffffff;
-  border: 4px solid var(--bg-surface);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), var(--shadow-md);
+  border: 3px solid var(--bg-surface);
+  box-shadow: 0 0 0 2.5px rgba(255, 255, 255, 0.45), 0 4px 16px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
   cursor: pointer;
+  outline: none;
 }
 
 .btn-capture-shutter:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.6), var(--shadow-lg), 0 0 22px rgba(255, 255, 255, 0.45);
+  transform: scale(1.08);
+  box-shadow: 0 0 0 3.5px rgba(255, 255, 255, 0.75), 0 0 18px rgba(255, 255, 255, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 .btn-capture-shutter:active {
@@ -839,22 +870,21 @@ select:focus-visible {
 }
 
 .btn-capture-shutter .shutter-inner {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: #f8fafc;
   border: 2px solid #cbd5e1;
   transition: var(--transition-fast);
 }
 
-/* Glowing Record Button for Video */
 .btn-record-trigger {
-  width: 66px;
-  height: 66px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: rgba(239, 68, 68, 0.16);
-  border: 4px solid var(--bg-surface);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4), var(--shadow-md);
+  background: rgba(239, 68, 68, 0.2);
+  border: 3px solid var(--bg-surface);
+  box-shadow: 0 0 0 2.5px rgba(239, 68, 68, 0.5), 0 4px 16px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -863,8 +893,8 @@ select:focus-visible {
 }
 
 .btn-record-trigger:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.6), var(--shadow-glow-red);
+  transform: scale(1.08);
+  box-shadow: 0 0 0 3.5px rgba(239, 68, 68, 0.75), 0 0 18px rgba(239, 68, 68, 0.65);
 }
 
 .btn-record-trigger:active {
@@ -872,24 +902,23 @@ select:focus-visible {
 }
 
 .btn-record-trigger .record-inner {
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--color-danger);
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* While recording: switch to rounded square */
 .btn-record-trigger.recording .record-inner {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-xs);
   background: #ffffff;
 }
 
 .btn-record-pause {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-medium);
@@ -913,121 +942,168 @@ select:focus-visible {
   border-color: #f59e0b;
 }
 
-/* Stage Quick Badges */
-.stage-quick-badges {
+/* Filter Strip (Integrated on Right Wing - Expanded) */
+.filter-strip-wrapper {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  flex: 1;
+  max-width: 540px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  min-width: 0;
 }
 
-.stage-badge-pill {
+.filter-presets-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 540px;
+  padding: 0.1rem 0.2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filter-presets-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  padding: 0.28rem 0.72rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: var(--transition-fast);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.filter-chip:hover {
+  color: #fff;
+  border-color: var(--border-medium);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.filter-chip.active {
+  background: rgba(59, 130, 246, 0.28);
+  border-color: var(--color-primary);
+  color: #93c5fd;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
+}
+
+/* Side Action Pills (Timer, Burst, Tune) */
+.stage-action-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-secondary);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-full);
   padding: 0.32rem 0.75rem;
+  transition: var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.stage-badge-pill strong {
+.stage-action-pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.stage-action-pill strong {
   color: var(--text-primary);
   font-family: var(--font-mono);
 }
 
-.stage-shortcut-tag {
-  display: inline-flex;
-  align-items: center;
-}
-
-.stage-shortcut-tag kbd {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-medium);
-  padding: 0.25rem 0.55rem;
-  font-size: 0.75rem;
-  border-radius: var(--radius-xs);
-  color: var(--text-muted);
-}
-
-/* Real-Time Filter Presets Carousel Strip */
-.filter-strip-wrapper {
+/* Recent Thumbnail Button on Left Wing */
+.stage-recent-thumb-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid var(--border-medium);
+  padding: 2px;
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  background: rgba(10, 14, 23, 0.45);
-  padding: 0.35rem 1rem;
-}
-
-.filter-strip-title {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.filter-presets-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  overflow-x: auto;
-  padding: 0.15rem 0;
-  scrollbar-width: none; /* Hide Firefox scrollbar */
-  -ms-overflow-style: none; /* IE and Edge */
-  flex: 1;
-}
-
-.filter-presets-bar::-webkit-scrollbar {
-  display: none; /* Hide Chrome, Safari, Opera scrollbar */
-}
-
-.filter-chip {
-  padding: 0.32rem 0.85rem;
-  border-radius: var(--radius-full);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  transition: var(--transition-fast);
+  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.filter-chip:hover {
-  color: var(--text-primary);
-  border-color: var(--border-medium);
-  background: var(--bg-surface-elevated);
+.stage-thumb-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.4);
 }
 
-.filter-chip.active {
-  background: rgba(59, 130, 246, 0.18);
-  border-color: var(--color-primary);
-  color: #60a5fa;
-  font-weight: 600;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+.stage-thumb-inner img,
+.stage-thumb-inner video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* ==========================================================================
    PRO STUDIO INSPECTOR CONSOLE (RIGHT PANEL)
    ========================================================================== */
 
+.inspector-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 95;
+  transition: opacity 0.25s ease;
+}
+
 .studio-inspector {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 92vw;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-left: 1px solid var(--border-medium);
+  box-shadow: -15px 0 45px rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  min-height: 480px;
+  overflow-y: auto;
+  z-index: 100;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-inspector.drawer-open {
+  transform: translateX(0);
+}
+
+.studio-inspector.drawer-closed {
+  transform: translateX(100%);
 }
 
 .inspector-header {
@@ -1036,7 +1112,7 @@ select:focus-visible {
   justify-content: space-between;
   padding: 0.85rem 1.15rem;
   border-bottom: 1px solid var(--border-subtle);
-  background: rgba(10, 14, 23, 0.6);
+  background: rgba(10, 14, 23, 0.75);
 }
 
 .inspector-title {
@@ -1444,7 +1520,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .gallery-section {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: min(97vw, 1760px);
+  margin: 3.5rem auto 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .gallery-header {
@@ -2013,43 +2094,34 @@ kbd {
   }
 
   .main-content {
-    padding: 0.85rem 1.25rem 2rem;
-    gap: 1.25rem;
-  }
-
-  .camera-workspace {
-    padding: 1rem;
+    padding: 0.65rem 1.25rem 2rem;
     gap: 1rem;
   }
 
+  .camera-workspace {
+    padding: 0;
+    gap: 0.75rem;
+  }
+
   .camera-viewport-wrap {
-    height: min(calc(100vh - 235px), 440px);
-    min-height: 260px;
+    height: calc(100vh - 85px);
+    min-height: 520px;
   }
 
   .capture-main-deck {
-    padding: 0.5rem 0.85rem;
+    padding: 0.6rem 1.25rem;
   }
 
   .btn-capture-shutter,
   .btn-record-trigger {
-    width: 58px;
-    height: 58px;
+    width: 66px;
+    height: 66px;
   }
 
   .btn-capture-shutter .shutter-inner,
   .btn-record-trigger .record-inner {
-    width: 44px;
-    height: 44px;
-  }
-
-  .studio-inspector {
-    min-height: 420px;
-  }
-
-  .inspector-panels-content {
-    padding: 0.85rem;
-    gap: 0.85rem;
+    width: 50px;
+    height: 50px;
   }
 }
 
@@ -2111,10 +2183,11 @@ kbd {
     font-size: 0.78rem;
   }
 
-  .stage-quick-badges {
+  .stage-quick-actions {
     width: 100%;
     justify-content: center;
     margin-top: 0.25rem;
+    flex-wrap: wrap;
   }
 
   .btn-capture-shutter,

@@ -312,6 +312,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       reelEl.appendChild(card);
     });
+
+    const stageThumbInner = document.getElementById('stage-thumb-inner');
+    if (stageThumbInner) {
+      if (list.length > 0) {
+        const latest = list[0];
+        const latestUrl = latest.dataUrl || (latest.blob ? URL.createObjectURL(latest.blob) : '');
+        if (latest.type === 'photo') {
+          stageThumbInner.innerHTML = `<img src="${latestUrl}" alt="Recent photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+        } else {
+          stageThumbInner.innerHTML = `<video src="${latestUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" muted></video>`;
+        }
+      } else {
+        stageThumbInner.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        `;
+      }
+    }
   }
 
   // Initialize Gallery
@@ -666,21 +687,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentMode = mode;
     [modePhotoBtn, modeVideoBtn, modeBurstBtn].forEach((btn) => btn.classList.remove('active'));
 
+    const stageBadgeBurst = document.getElementById('stage-badge-burst');
+
     if (mode === 'photo') {
       modePhotoBtn.classList.add('active');
       btnCaptureShutter.classList.remove('hidden');
       btnRecordTrigger.classList.add('hidden');
       btnRecordPause.classList.add('hidden');
+      if (stageBadgeBurst) stageBadgeBurst.classList.remove('hidden');
     } else if (mode === 'video') {
       modeVideoBtn.classList.add('active');
       btnCaptureShutter.classList.add('hidden');
       btnRecordTrigger.classList.remove('hidden');
       btnRecordPause.classList.add('hidden');
+      if (stageBadgeBurst) stageBadgeBurst.classList.add('hidden');
     } else if (mode === 'burst') {
       modeBurstBtn.classList.add('active');
       btnCaptureShutter.classList.remove('hidden');
       btnRecordTrigger.classList.add('hidden');
       btnRecordPause.classList.add('hidden');
+      if (stageBadgeBurst) stageBadgeBurst.classList.remove('hidden');
     }
   }
 
@@ -961,6 +987,80 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       const gallerySec = document.getElementById('gallery');
       if (gallerySec) gallerySec.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+  /* Studio Tools Slide-out Drawer Controls */
+  const studioInspector = document.getElementById('studio-inspector');
+  const inspectorBackdrop = document.getElementById('inspector-backdrop');
+  const btnOpenTools = document.getElementById('btn-open-tools');
+  const btnOpenToolsDeck = document.getElementById('btn-open-tools-deck');
+  const btnCloseInspector = document.getElementById('btn-close-inspector');
+
+  function openToolsDrawer(tab = null) {
+    if (tab) switchInspectorTab(tab);
+    if (studioInspector) {
+      studioInspector.classList.remove('drawer-closed');
+      studioInspector.classList.add('drawer-open');
+    }
+    if (inspectorBackdrop) inspectorBackdrop.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeToolsDrawer() {
+    if (studioInspector) {
+      studioInspector.classList.remove('drawer-open');
+      studioInspector.classList.add('drawer-closed');
+    }
+    if (inspectorBackdrop) inspectorBackdrop.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+  }
+
+  if (btnOpenTools) btnOpenTools.addEventListener('click', () => openToolsDrawer());
+  if (btnOpenToolsDeck) btnOpenToolsDeck.addEventListener('click', () => openToolsDrawer());
+  if (btnCloseInspector) btnCloseInspector.addEventListener('click', closeToolsDrawer);
+  if (inspectorBackdrop) inspectorBackdrop.addEventListener('click', closeToolsDrawer);
+
+  /* Quick Deck Buttons: Timer, Burst, and Recent Thumbnail */
+  const stageBadgeTimer = document.getElementById('stage-badge-timer');
+  if (stageBadgeTimer) {
+    stageBadgeTimer.addEventListener('click', () => {
+      const delays = [0, 3, 5, 10];
+      const cur = parseInt(settings.timerDelay, 10) || 0;
+      const idx = delays.indexOf(cur);
+      const nextDelay = delays[(idx + 1) % delays.length];
+      settings.timerDelay = nextDelay;
+      selectTimer.value = String(nextDelay);
+      labelTimerVal.textContent = nextDelay === 0 ? 'Off' : `${nextDelay}s`;
+      saveSettings(settings);
+      showToast(nextDelay === 0 ? 'Timer: Off' : `Timer: ${nextDelay}s`, 'info', 1300);
+    });
+  }
+
+  const stageBadgeBurst = document.getElementById('stage-badge-burst');
+  if (stageBadgeBurst) {
+    stageBadgeBurst.addEventListener('click', () => {
+      const counts = [3, 5, 10];
+      const cur = parseInt(settings.burstCount, 10) || 3;
+      const idx = counts.indexOf(cur);
+      const nextCount = counts[(idx + 1) % counts.length];
+      settings.burstCount = nextCount;
+      selectBurstCount.value = String(nextCount);
+      const stageBurstCountLabel = document.getElementById('stage-burst-count-label');
+      if (stageBurstCountLabel) stageBurstCountLabel.textContent = `${nextCount}x`;
+      saveSettings(settings);
+      showToast(`Burst count: ${nextCount}x`, 'info', 1300);
+    });
+  }
+
+  const btnStageRecentThumb = document.getElementById('btn-stage-recent-thumb');
+  if (btnStageRecentThumb) {
+    btnStageRecentThumb.addEventListener('click', () => {
+      if (galleryManager.items && galleryManager.items.length > 0) {
+        galleryManager.openLightbox(0);
+      } else {
+        const gallerySec = document.getElementById('gallery');
+        if (gallerySec) gallerySec.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   }
 

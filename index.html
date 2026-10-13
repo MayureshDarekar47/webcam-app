@@ -37,6 +37,14 @@
       </div>
 
       <div class="header-actions">
+        <button class="btn btn-secondary" id="btn-open-tools" title="Camera Tools & Adjustments">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span>Tools</span>
+        </button>
+
         <a href="#gallery" class="btn btn-secondary" id="btn-jump-gallery">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -193,94 +201,107 @@
             </button>
           </div>
 
+          <!-- STUDIO CAPTURE BAR (Docked Directly INSIDE the Camera Viewport at Bottom) -->
+          <div class="studio-capture-bar">
+
+            <div class="capture-main-deck">
+
+              <!-- Left Wing: Recent Thumb + Timer + Mode Selector -->
+              <div class="deck-wing deck-left">
+                <button class="stage-recent-thumb-btn" id="btn-stage-recent-thumb" title="Open Latest Capture in Gallery" aria-label="Latest capture preview">
+                  <div class="stage-thumb-inner" id="stage-thumb-inner">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                  </div>
+                </button>
+
+                <button class="stage-action-pill" id="stage-badge-timer" title="Countdown Timer (Click: Off / 3s / 5s / 10s)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span><strong id="label-timer-val">Off</strong></span>
+                </button>
+
+                <div class="mode-selector" role="tablist" aria-label="Capture Modes">
+                  <button class="mode-btn active" id="mode-photo" role="tab" aria-selected="true" title="Photo Mode (1)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                    <span>Photo</span>
+                  </button>
+                  <button class="mode-btn" id="mode-video" role="tab" aria-selected="false" title="Video Mode (2)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="23 7 16 12 23 17 23 7"/>
+                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                    <span>Video</span>
+                  </button>
+                  <button class="mode-btn" id="mode-burst" role="tab" aria-selected="false" title="Burst Mode (3)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="8" y="2" width="13" height="13" rx="2"/>
+                      <path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/>
+                    </svg>
+                    <span>Burst</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Center Hero: Shutter & Record Button (Compact Size) -->
+              <div class="capture-controls-group">
+                <button class="btn-capture-shutter" id="btn-capture-shutter" title="Take Photo (Space)" aria-label="Take Photo">
+                  <div class="shutter-inner"></div>
+                </button>
+
+                <button class="btn-record-trigger hidden" id="btn-record-trigger" title="Start Recording (R)" aria-label="Start Recording">
+                  <div class="record-inner"></div>
+                </button>
+
+                <button class="btn-record-pause hidden" id="btn-record-pause" title="Pause / Resume Recording (P)" aria-label="Pause Recording">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16"/>
+                    <rect x="14" y="4" width="4" height="16"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Right Wing: Filters Strip + Burst Count + Tune Tools -->
+              <div class="deck-wing deck-right">
+                <div class="filter-strip-wrapper">
+                  <div class="filter-presets-bar" id="filter-presets-bar">
+                    <!-- Dynamically populated filter chips -->
+                  </div>
+                </div>
+
+                <button class="stage-action-pill hidden" id="stage-badge-burst" title="Burst Count (Click: 3x / 5x / 10x)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="13" height="13" rx="2"/><path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+                  <span><strong id="stage-burst-count-label">3x</strong></span>
+                </button>
+
+                <button class="stage-action-pill" id="btn-open-tools-deck" title="Open Adjustments & Devices">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+                    <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+                  </svg>
+                  <span>Tune</span>
+                </button>
+              </div>
+
+            </div> <!-- /capture-main-deck -->
+
+          </div> <!-- /studio-capture-bar -->
+
         </div> <!-- /camera-viewport-wrap -->
-
-        <!-- STUDIO CAPTURE BAR -->
-        <div class="studio-capture-bar">
-
-          <!-- Main Shutter Deck -->
-          <div class="capture-main-deck">
-
-            <!-- Mode Selector Switcher -->
-            <div class="mode-selector" role="tablist" aria-label="Capture Modes">
-              <button class="mode-btn active" id="mode-photo" role="tab" aria-selected="true">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                  <circle cx="12" cy="13" r="4"/>
-                </svg>
-                <span>Photo</span>
-                <span class="mode-key">1</span>
-              </button>
-              <button class="mode-btn" id="mode-video" role="tab" aria-selected="false">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="23 7 16 12 23 17 23 7"/>
-                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                </svg>
-                <span>Video</span>
-                <span class="mode-key">2</span>
-              </button>
-              <button class="mode-btn" id="mode-burst" role="tab" aria-selected="false">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="8" y="2" width="13" height="13" rx="2"/>
-                  <path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/>
-                </svg>
-                <span>Burst</span>
-                <span class="mode-key">3</span>
-              </button>
-            </div>
-
-            <!-- Central Shutter & Recording Buttons -->
-            <div class="capture-controls-group">
-              <button class="btn-capture-shutter" id="btn-capture-shutter" title="Take Photo (Space)" aria-label="Take Photo">
-                <div class="shutter-inner"></div>
-              </button>
-
-              <button class="btn-record-trigger hidden" id="btn-record-trigger" title="Start Recording (R)" aria-label="Start Recording">
-                <div class="record-inner"></div>
-              </button>
-
-              <button class="btn-record-pause hidden" id="btn-record-pause" title="Pause / Resume Recording (P)" aria-label="Pause Recording">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="4" width="4" height="16"/>
-                  <rect x="14" y="4" width="4" height="16"/>
-                </svg>
-              </button>
-            </div>
-
-            <!-- Stage Quick Info Pills -->
-            <div class="stage-quick-badges">
-              <div class="stage-badge-pill" id="stage-badge-timer" title="Active Countdown Timer">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span>Timer: <strong id="label-timer-val">Off</strong></span>
-              </div>
-              <div class="stage-badge-pill" id="stage-badge-burst" title="Burst Shots Series">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="13" height="13" rx="2"/><path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
-                <span>Burst: <strong id="stage-burst-count-label">3x</strong></span>
-              </div>
-              <div class="stage-shortcut-tag" title="Keyboard Shortcut">
-                <kbd>Space</kbd>
-              </div>
-            </div>
-
-          </div> <!-- /capture-main-deck -->
-
-          <!-- Real-Time Filter Presets Carousel Strip -->
-          <div class="filter-strip-wrapper">
-            <div class="filter-strip-title">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0 0 20z"/></svg>
-              <span>Filters</span>
-            </div>
-            <div class="filter-presets-bar" id="filter-presets-bar">
-              <!-- Dynamically populated filter chips -->
-            </div>
-          </div>
-
-        </div> <!-- /studio-capture-bar -->
 
       </div> <!-- /studio-stage -->
 
-      <!-- STUDIO RIGHT: PRO INSPECTOR & TUNING CONSOLE -->
-      <aside class="studio-inspector" aria-label="Studio Control Console">
+    </section>
+
+    <!-- TOOLS SLIDE-OUT DRAWER BACKDROP & DRAWER -->
+    <div class="inspector-backdrop hidden" id="inspector-backdrop"></div>
+    <aside class="studio-inspector drawer-closed" id="studio-inspector" aria-label="Studio Control Console">
 
         <!-- Inspector Header -->
         <div class="inspector-header">
@@ -289,9 +310,11 @@
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
-            <span>Studio Console</span>
+            <span>Studio Tools</span>
           </div>
-          <span class="inspector-live-tag">LIVE</span>
+          <button class="modal-close-btn" id="btn-close-inspector" aria-label="Close Studio Tools">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
 
         <!-- Inspector Tabs Switcher -->
@@ -377,30 +400,7 @@
               </button>
             </div>
 
-            <!-- Live Scope & Color Level Indicator -->
-            <div class="scope-monitor-card">
-              <div class="scope-monitor-header">
-                <span>Signal & Color Levels</span>
-                <span class="scope-tag">RGB SCOPE</span>
-              </div>
-              <div class="scope-bars">
-                <div class="scope-bar-item">
-                  <span class="scope-channel red">R</span>
-                  <div class="scope-track"><div class="scope-fill red" id="scope-r" style="width: 72%;"></div></div>
-                  <span class="scope-val" id="scope-val-r">72%</span>
-                </div>
-                <div class="scope-bar-item">
-                  <span class="scope-channel green">G</span>
-                  <div class="scope-track"><div class="scope-fill green" id="scope-g" style="width: 78%;"></div></div>
-                  <span class="scope-val" id="scope-val-g">78%</span>
-                </div>
-                <div class="scope-bar-item">
-                  <span class="scope-channel blue">B</span>
-                  <div class="scope-track"><div class="scope-fill blue" id="scope-b" style="width: 74%;"></div></div>
-                  <span class="scope-val" id="scope-val-b">74%</span>
-                </div>
-              </div>
-            </div>
+
 
           </div>
 
@@ -505,8 +505,6 @@
         </div>
 
       </aside> <!-- /studio-inspector -->
-
-    </section>
 
     <!-- MEDIA GALLERY SECTION -->
     <section class="gallery-section" id="gallery" aria-label="Media Gallery">
