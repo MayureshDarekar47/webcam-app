@@ -65,324 +65,424 @@
   </header>
 
   <!-- Main Container -->
-  <main class="main-content">
+  <main class="main-content">    <!-- CAMERA WORKSPACE (PRO LAPTOP STUDIO) -->
+    <section class="camera-workspace" id="camera-workspace" aria-label="Webcam Studio Workspace">
 
-    <!-- CAMERA WORKSPACE -->
-    <section class="camera-workspace" id="camera-workspace" aria-label="Webcam Workspace">
+      <!-- STUDIO LEFT: VIEWFINDER & PRIMARY CAPTURE STAGE -->
+      <div class="studio-stage">
 
-      <!-- Viewport Wrap -->
-      <div class="camera-viewport-wrap" id="viewport-wrap">
+        <!-- Viewport Wrap -->
+        <div class="camera-viewport-wrap" id="viewport-wrap">
 
-        <!-- Live Video Element -->
-        <video id="webcam-video" autoplay playsinline muted></video>
+          <!-- Live Video Element -->
+          <video id="webcam-video" autoplay playsinline muted></video>
 
-        <!-- Composition Grid Overlay -->
-        <div class="grid-overlay" id="grid-overlay"></div>
+          <!-- Composition Grid Overlay -->
+          <div class="grid-overlay" id="grid-overlay"></div>
 
-        <!-- Shutter Flash Overlay -->
-        <div class="shutter-flash" id="shutter-flash"></div>
+          <!-- Shutter Flash Overlay -->
+          <div class="shutter-flash" id="shutter-flash"></div>
 
-        <!-- Countdown Overlay -->
-        <div class="countdown-overlay hidden" id="countdown-overlay">
-          <span class="countdown-number" id="countdown-number">3</span>
-        </div>
-
-        <!-- Inactive Placeholder State -->
-        <div class="camera-placeholder" id="camera-placeholder">
-          <div class="placeholder-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-              <circle cx="12" cy="13" r="4"/>
-            </svg>
-          </div>
-          <h2>Ready to Launch Camera</h2>
-          <p>Click below to grant camera access. Your video is processed 100% locally on your device and is never uploaded to any server.</p>
-
-          <!-- Error Alert Box (if permission denied or device busy) -->
-          <div class="camera-error-box hidden" id="camera-error-box">
-            <h3 id="error-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              Camera Access Notice
-            </h3>
-            <p id="error-message">Camera permission was denied or device is not available.</p>
-            <div class="error-troubleshoot" id="error-troubleshoot">
-              Please click the site permissions icon in your browser address bar and set Camera to "Allow".
-            </div>
+          <!-- Countdown Overlay -->
+          <div class="countdown-overlay hidden" id="countdown-overlay">
+            <span class="countdown-number" id="countdown-number">3</span>
           </div>
 
-          <div class="placeholder-actions">
-            <button class="btn btn-primary btn-start-camera" id="btn-start-camera">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polygon points="10 8 16 12 10 16 10 8"/>
-              </svg>
-              Start Camera
-            </button>
-          </div>
-
-          <div class="privacy-pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            100% Client-Side Privacy Guaranteed
-          </div>
-        </div>
-
-        <!-- HUD: Top Left Status -->
-        <div class="hud-top-left">
-          <div class="hud-pill hidden" id="hud-recording-pill">
-            <span class="hud-rec-dot"></span>
-            <span>REC</span>
-            <span class="hud-timer" id="hud-record-timer">00:00</span>
-          </div>
-          <div class="hud-pill hud-pill-paused hidden" id="hud-paused-pill">
-            <span>PAUSED</span>
-          </div>
-        </div>
-
-        <!-- HUD: Top Right Quick Overlays -->
-        <div class="hud-top-right">
-          <button class="viewport-quick-btn" id="btn-quick-mirror" title="Toggle Mirror (M)" aria-label="Toggle Mirror">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 3 21 3 21 8"/>
-              <line x1="4" y1="20" x2="21" y2="3"/>
-              <polyline points="21 16 21 21 16 21"/>
-              <line x1="15" y1="15" x2="21" y2="21"/>
-              <line x1="4" y1="4" x2="9" y2="9"/>
-            </svg>
-          </button>
-          <button class="viewport-quick-btn" id="btn-quick-flipv" title="Flip Vertical" aria-label="Flip Vertical">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M7 10l5-5 5 5M7 14l5 5 5-5"/>
-            </svg>
-          </button>
-          <button class="viewport-quick-btn" id="btn-quick-grid" title="Composition Grid (G)" aria-label="Composition Grid">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <line x1="9" y1="3" x2="9" y2="21"/>
-              <line x1="15" y1="3" x2="15" y2="21"/>
-              <line x1="3" y1="9" x2="21" y2="9"/>
-              <line x1="3" y1="15" x2="21" y2="15"/>
-            </svg>
-          </button>
-          <button class="viewport-quick-btn" id="btn-quick-pip" title="Picture-in-Picture" aria-label="Picture in Picture">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <rect x="12" y="10" width="8" height="6" rx="1"/>
-            </svg>
-          </button>
-          <button class="viewport-quick-btn" id="btn-quick-fullscreen" title="Fullscreen (F)" aria-label="Fullscreen">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- HUD: Bottom Left Info -->
-        <div class="hud-bottom-left">
-          <div class="hud-pill hidden" id="hud-stream-info">
-            <span id="hud-resolution-text">1080p</span>
-            <span>&bull;</span>
-            <span id="hud-fps-text">30 FPS</span>
-          </div>
-        </div>
-
-        <!-- HUD: Bottom Right Stop Camera -->
-        <div class="hud-bottom-right">
-          <button class="viewport-quick-btn hidden" id="btn-quick-stop" title="Stop Camera" aria-label="Stop Camera">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <rect x="9" y="9" width="6" height="6"/>
-            </svg>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- CAMERA CONTROLS DASHBOARD -->
-      <div class="camera-controls-dashboard">
-
-        <!-- Top Row: Mode Switcher & Drawer Toggles -->
-        <div class="dashboard-top-row">
-
-          <!-- Capture Modes -->
-          <div class="mode-selector" role="tablist" aria-label="Capture Modes">
-            <button class="mode-btn active" id="mode-photo" role="tab" aria-selected="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <!-- Inactive Placeholder State -->
+          <div class="camera-placeholder" id="camera-placeholder">
+            <div class="placeholder-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                 <circle cx="12" cy="13" r="4"/>
               </svg>
-              Photo
-            </button>
-            <button class="mode-btn" id="mode-video" role="tab" aria-selected="false">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="23 7 16 12 23 17 23 7"/>
-                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-              </svg>
-              Video
-            </button>
-            <button class="mode-btn" id="mode-burst" role="tab" aria-selected="false">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="8" y="2" width="13" height="13" rx="2"/>
-                <path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/>
-              </svg>
-              Burst
-            </button>
-          </div>
+            </div>
+            <h2>Ready to Launch Studio Camera</h2>
+            <p>Click below to grant camera access. Your video is processed 100% locally on your laptop with zero cloud transmissions.</p>
 
-          <!-- Drawer Toggles -->
-          <div class="drawer-toggles">
-            <button class="btn btn-secondary" id="btn-toggle-devices">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-              </svg>
-              Camera & Input
-            </button>
+            <!-- Error Alert Box -->
+            <div class="camera-error-box hidden" id="camera-error-box">
+              <h3 id="error-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Camera Access Notice
+              </h3>
+              <p id="error-message">Camera permission was denied or device is not available.</p>
+              <div class="error-troubleshoot" id="error-troubleshoot">
+                Please click the camera permissions lock icon in your browser address bar and set Camera to "Allow".
+              </div>
+            </div>
 
-            <button class="btn btn-secondary" id="btn-toggle-adjustments">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="4" y1="21" x2="4" y2="14"/>
-                <line x1="4" y1="10" x2="4" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12" y2="3"/>
-                <line x1="20" y1="21" x2="20" y2="16"/>
-                <line x1="20" y1="12" x2="20" y2="3"/>
-                <line x1="1" y1="14" x2="7" y2="14"/>
-                <line x1="9" y1="8" x2="15" y2="8"/>
-                <line x1="17" y1="16" x2="23" y2="16"/>
-              </svg>
-              Zoom & Color
-            </button>
-
-            <button class="btn btn-secondary" id="btn-toggle-timer">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              Timer: <span id="label-timer-val">Off</span>
-            </button>
-          </div>
-
-        </div>
-
-        <!-- Devices Drawer (Collapsible) -->
-        <div class="drawer-panel hidden" id="drawer-devices">
-          <div class="drawer-group">
-            <label class="drawer-label" for="select-camera">Camera Device</label>
-            <div style="display: flex; gap: 0.5rem;">
-              <select class="custom-select" id="select-camera"></select>
-              <button class="btn-icon" id="btn-flip-facing" title="Flip Front / Rear Camera" aria-label="Flip Camera">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+            <div class="placeholder-actions">
+              <button class="btn btn-primary btn-start-camera" id="btn-start-camera">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="10 8 16 12 10 16 10 8"/>
                 </svg>
+                Start Camera
               </button>
+            </div>
+
+            <div class="privacy-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              100% Client-Side Privacy Guaranteed
             </div>
           </div>
 
-          <div class="drawer-group">
-            <label class="drawer-label" for="select-resolution">Resolution Preset</label>
-            <select class="custom-select" id="select-resolution">
-              <option value="1080p">1080p Full HD (1920 × 1080)</option>
-              <option value="4k">4K Ultra HD (3840 × 2160)</option>
-              <option value="720p">720p HD (1280 × 720)</option>
-              <option value="480p">480p SD (640 × 480)</option>
-              <option value="auto">Native / Auto</option>
-            </select>
+          <!-- HUD: Top Left Status -->
+          <div class="hud-top-left">
+            <div class="hud-pill hidden" id="hud-recording-pill">
+              <span class="hud-rec-dot"></span>
+              <span>REC</span>
+              <span class="hud-timer" id="hud-record-timer">00:00</span>
+            </div>
+            <div class="hud-pill hud-pill-paused hidden" id="hud-paused-pill">
+              <span>PAUSED</span>
+            </div>
           </div>
 
-          <div class="drawer-group">
-            <label class="drawer-label" for="select-mic">Microphone</label>
-            <select class="custom-select" id="select-mic"></select>
-          </div>
-
-          <div class="drawer-group" style="justify-content: flex-end;">
-            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.85rem;">
-              <input type="checkbox" id="toggle-audio-recording" checked />
-              Include Microphone Audio in Recordings
-            </label>
-          </div>
-        </div>
-
-        <!-- Adjustments Drawer (Collapsible) -->
-        <div class="drawer-panel hidden" id="drawer-adjustments">
-          <div class="drawer-group">
-            <label class="drawer-label">Digital Zoom <span id="val-zoom">1.0x</span></label>
-            <input type="range" id="slider-zoom" min="1.0" max="4.0" step="0.1" value="1.0" />
-          </div>
-
-          <div class="drawer-group">
-            <label class="drawer-label">Brightness <span id="val-brightness">100%</span></label>
-            <input type="range" id="slider-brightness" min="50" max="150" step="1" value="100" />
-          </div>
-
-          <div class="drawer-group">
-            <label class="drawer-label">Contrast <span id="val-contrast">100%</span></label>
-            <input type="range" id="slider-contrast" min="50" max="150" step="1" value="100" />
-          </div>
-
-          <div class="drawer-group">
-            <label class="drawer-label">Saturation <span id="val-saturation">100%</span></label>
-            <input type="range" id="slider-saturation" min="0" max="200" step="1" value="100" />
-          </div>
-
-          <div class="drawer-group" style="justify-content: flex-end; grid-column: 1 / -1;">
-            <button class="btn btn-secondary" id="btn-reset-adjustments" style="align-self: flex-start;">
-              Reset Adjustments
-            </button>
-          </div>
-        </div>
-
-        <!-- Timer & Burst Drawer (Collapsible) -->
-        <div class="drawer-panel hidden" id="drawer-timer">
-          <div class="drawer-group">
-            <label class="drawer-label" for="select-timer">Countdown Timer</label>
-            <select class="custom-select" id="select-timer">
-              <option value="0">Off (Instant)</option>
-              <option value="3">3 Seconds</option>
-              <option value="5">5 Seconds</option>
-              <option value="10">10 Seconds</option>
-            </select>
-          </div>
-
-          <div class="drawer-group">
-            <label class="drawer-label" for="select-burst-count">Burst Shots Count</label>
-            <select class="custom-select" id="select-burst-count">
-              <option value="3">3 Photos</option>
-              <option value="5">5 Photos</option>
-              <option value="10">10 Photos</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Deck Row: Capture / Record Controls -->
-        <div class="dashboard-deck-row">
-          <div class="capture-controls-group">
-
-            <!-- Photo Capture Button -->
-            <button class="btn-capture-shutter" id="btn-capture-shutter" title="Take Photo (Space)" aria-label="Take Photo">
-              <div class="shutter-inner"></div>
-            </button>
-
-            <!-- Video Record Button -->
-            <button class="btn-record-trigger hidden" id="btn-record-trigger" title="Start Recording (R)" aria-label="Start Recording">
-              <div class="record-inner"></div>
-            </button>
-
-            <!-- Video Pause/Resume Button -->
-            <button class="btn-record-pause hidden" id="btn-record-pause" title="Pause / Resume Recording (P)" aria-label="Pause Recording">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="6" y="4" width="4" height="16"/>
-                <rect x="14" y="4" width="4" height="16"/>
+          <!-- HUD: Top Right Quick Overlays -->
+          <div class="hud-top-right">
+            <button class="viewport-quick-btn" id="btn-quick-mirror" title="Toggle Mirror (M)" aria-label="Toggle Mirror">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 3 21 3 21 8"/>
+                <line x1="4" y1="20" x2="21" y2="3"/>
+                <polyline points="21 16 21 21 16 21"/>
+                <line x1="15" y1="15" x2="21" y2="21"/>
+                <line x1="4" y1="4" x2="9" y2="9"/>
               </svg>
             </button>
+            <button class="viewport-quick-btn" id="btn-quick-flipv" title="Flip Vertical" aria-label="Flip Vertical">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 10l5-5 5 5M7 14l5 5 5-5"/>
+              </svg>
+            </button>
+            <button class="viewport-quick-btn" id="btn-quick-grid" title="Composition Grid (G)" aria-label="Composition Grid">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="9" y1="3" x2="9" y2="21"/>
+                <line x1="15" y1="3" x2="15" y2="21"/>
+                <line x1="3" y1="9" x2="21" y2="9"/>
+                <line x1="3" y1="15" x2="21" y2="15"/>
+              </svg>
+            </button>
+            <button class="viewport-quick-btn" id="btn-quick-pip" title="Picture-in-Picture" aria-label="Picture in Picture">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <rect x="12" y="10" width="8" height="6" rx="1"/>
+              </svg>
+            </button>
+            <button class="viewport-quick-btn" id="btn-quick-fullscreen" title="Fullscreen (F)" aria-label="Fullscreen">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+              </svg>
+            </button>
+          </div>
 
+          <!-- HUD: Bottom Left Info -->
+          <div class="hud-bottom-left">
+            <div class="hud-pill hidden" id="hud-stream-info">
+              <span id="hud-resolution-text">1080p</span>
+              <span>&bull;</span>
+              <span id="hud-fps-text">30 FPS</span>
+            </div>
+          </div>
+
+          <!-- HUD: Bottom Right Stop Camera -->
+          <div class="hud-bottom-right">
+            <button class="viewport-quick-btn hidden" id="btn-quick-stop" title="Stop Camera" aria-label="Stop Camera">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <rect x="9" y="9" width="6" height="6"/>
+              </svg>
+            </button>
+          </div>
+
+        </div> <!-- /camera-viewport-wrap -->
+
+        <!-- STUDIO CAPTURE BAR -->
+        <div class="studio-capture-bar">
+
+          <!-- Main Shutter Deck -->
+          <div class="capture-main-deck">
+
+            <!-- Mode Selector Switcher -->
+            <div class="mode-selector" role="tablist" aria-label="Capture Modes">
+              <button class="mode-btn active" id="mode-photo" role="tab" aria-selected="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                <span>Photo</span>
+                <span class="mode-key">1</span>
+              </button>
+              <button class="mode-btn" id="mode-video" role="tab" aria-selected="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="23 7 16 12 23 17 23 7"/>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+                <span>Video</span>
+                <span class="mode-key">2</span>
+              </button>
+              <button class="mode-btn" id="mode-burst" role="tab" aria-selected="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="8" y="2" width="13" height="13" rx="2"/>
+                  <path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/>
+                </svg>
+                <span>Burst</span>
+                <span class="mode-key">3</span>
+              </button>
+            </div>
+
+            <!-- Central Shutter & Recording Buttons -->
+            <div class="capture-controls-group">
+              <button class="btn-capture-shutter" id="btn-capture-shutter" title="Take Photo (Space)" aria-label="Take Photo">
+                <div class="shutter-inner"></div>
+              </button>
+
+              <button class="btn-record-trigger hidden" id="btn-record-trigger" title="Start Recording (R)" aria-label="Start Recording">
+                <div class="record-inner"></div>
+              </button>
+
+              <button class="btn-record-pause hidden" id="btn-record-pause" title="Pause / Resume Recording (P)" aria-label="Pause Recording">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16"/>
+                  <rect x="14" y="4" width="4" height="16"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Stage Quick Info Pills -->
+            <div class="stage-quick-badges">
+              <div class="stage-badge-pill" id="stage-badge-timer" title="Active Countdown Timer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Timer: <strong id="label-timer-val">Off</strong></span>
+              </div>
+              <div class="stage-badge-pill" id="stage-badge-burst" title="Burst Shots Series">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="13" height="13" rx="2"/><path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+                <span>Burst: <strong id="stage-burst-count-label">3x</strong></span>
+              </div>
+              <div class="stage-shortcut-tag" title="Keyboard Shortcut">
+                <kbd>Space</kbd>
+              </div>
+            </div>
+
+          </div> <!-- /capture-main-deck -->
+
+          <!-- Real-Time Filter Presets Carousel Strip -->
+          <div class="filter-strip-wrapper">
+            <div class="filter-strip-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0 0 20z"/></svg>
+              <span>Filters</span>
+            </div>
+            <div class="filter-presets-bar" id="filter-presets-bar">
+              <!-- Dynamically populated filter chips -->
+            </div>
+          </div>
+
+        </div> <!-- /studio-capture-bar -->
+
+      </div> <!-- /studio-stage -->
+
+      <!-- STUDIO RIGHT: PRO INSPECTOR & TUNING CONSOLE -->
+      <aside class="studio-inspector" aria-label="Studio Control Console">
+
+        <!-- Inspector Header -->
+        <div class="inspector-header">
+          <div class="inspector-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Studio Console</span>
+          </div>
+          <span class="inspector-live-tag">LIVE</span>
+        </div>
+
+        <!-- Inspector Tabs Switcher -->
+        <div class="inspector-tab-nav" role="tablist">
+          <button class="inspector-nav-tab active" id="btn-toggle-adjustments" role="tab" aria-selected="true" title="Zoom & Color Adjustments">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+            </svg>
+            <span>Tuning</span>
+          </button>
+          <button class="inspector-nav-tab" id="btn-toggle-devices" role="tab" aria-selected="false" title="Camera & Audio Hardware">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            <span>Devices</span>
+          </button>
+          <button class="inspector-nav-tab" id="btn-toggle-timer" role="tab" aria-selected="false" title="Timer & Burst Settings">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Capture</span>
+          </button>
+        </div>
+
+        <!-- Panels Container -->
+        <div class="inspector-panels-content">
+
+          <!-- PANEL 1: Adjustments / Tuning (Default Active on Laptop) -->
+          <div class="drawer-panel" id="drawer-adjustments">
+
+            <!-- Digital Zoom with quick preset pills -->
+            <div class="drawer-group">
+              <div class="group-header-row">
+                <label class="drawer-label" for="slider-zoom">Digital Zoom</label>
+                <span class="val-pill" id="val-zoom">1.0x</span>
+              </div>
+              <div class="quick-zoom-chips" role="group" aria-label="Zoom Presets">
+                <button type="button" class="quick-chip active" data-zoom="1.0">1.0x</button>
+                <button type="button" class="quick-chip" data-zoom="1.5">1.5x</button>
+                <button type="button" class="quick-chip" data-zoom="2.0">2.0x</button>
+                <button type="button" class="quick-chip" data-zoom="3.0">3.0x</button>
+              </div>
+              <input type="range" id="slider-zoom" min="1.0" max="4.0" step="0.1" value="1.0" />
+            </div>
+
+            <!-- Brightness -->
+            <div class="drawer-group">
+              <div class="group-header-row">
+                <label class="drawer-label" for="slider-brightness">Brightness</label>
+                <span class="val-pill" id="val-brightness">100%</span>
+              </div>
+              <input type="range" id="slider-brightness" min="50" max="150" step="1" value="100" />
+            </div>
+
+            <!-- Contrast -->
+            <div class="drawer-group">
+              <div class="group-header-row">
+                <label class="drawer-label" for="slider-contrast">Contrast</label>
+                <span class="val-pill" id="val-contrast">100%</span>
+              </div>
+              <input type="range" id="slider-contrast" min="50" max="150" step="1" value="100" />
+            </div>
+
+            <!-- Saturation -->
+            <div class="drawer-group">
+              <div class="group-header-row">
+                <label class="drawer-label" for="slider-saturation">Saturation</label>
+                <span class="val-pill" id="val-saturation">100%</span>
+              </div>
+              <input type="range" id="slider-saturation" min="0" max="200" step="1" value="100" />
+            </div>
+
+            <div class="drawer-group" style="padding-top: 0.35rem;">
+              <button class="btn btn-secondary w-full" id="btn-reset-adjustments">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+                Reset All Adjustments
+              </button>
+            </div>
+
+          </div>
+
+          <!-- PANEL 2: Devices / Hardware -->
+          <div class="drawer-panel hidden" id="drawer-devices">
+
+            <div class="drawer-group">
+              <label class="drawer-label" for="select-camera">Camera Input Device</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <select class="custom-select" id="select-camera"></select>
+                <button class="btn-icon" id="btn-flip-facing" title="Flip Front / Rear Camera" aria-label="Flip Camera">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="drawer-group">
+              <label class="drawer-label" for="select-resolution">Resolution Preset</label>
+              <select class="custom-select" id="select-resolution">
+                <option value="1080p">1080p Full HD (1920 × 1080)</option>
+                <option value="4k">4K Ultra HD (3840 × 2160)</option>
+                <option value="720p">720p HD (1280 × 720)</option>
+                <option value="480p">480p SD (640 × 480)</option>
+                <option value="auto">Native / Auto</option>
+              </select>
+            </div>
+
+            <div class="drawer-group">
+              <label class="drawer-label" for="select-mic">Audio Microphone</label>
+              <select class="custom-select" id="select-mic"></select>
+            </div>
+
+            <!-- Audio Input VU Meter -->
+            <div class="drawer-group">
+              <div class="audio-vu-box" id="audio-vu-box">
+                <div class="audio-vu-label">
+                  <span>Microphone Input Level</span>
+                  <span id="audio-vu-text">Standby</span>
+                </div>
+                <div class="audio-vu-meter">
+                  <div class="audio-vu-fill" id="audio-vu-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="drawer-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="toggle-audio-recording" checked />
+                <span>Include Microphone Audio in Recordings</span>
+              </label>
+            </div>
+
+          </div>
+
+          <!-- PANEL 3: Capture / Timer & Burst -->
+          <div class="drawer-panel hidden" id="drawer-timer">
+
+            <div class="drawer-group">
+              <label class="drawer-label" for="select-timer">Countdown Shutter Timer</label>
+              <select class="custom-select" id="select-timer">
+                <option value="0">Off (Instant Shutter)</option>
+                <option value="3">3 Seconds Delay</option>
+                <option value="5">5 Seconds Delay</option>
+                <option value="10">10 Seconds Delay</option>
+              </select>
+            </div>
+
+            <div class="drawer-group">
+              <label class="drawer-label" for="select-burst-count">Burst Shots Series</label>
+              <select class="custom-select" id="select-burst-count">
+                <option value="3">3 Photos in Sequence</option>
+                <option value="5">5 Photos in Sequence</option>
+                <option value="10">10 Photos in Sequence</option>
+              </select>
+            </div>
+
+            <div class="drawer-group">
+              <button class="btn btn-secondary w-full" id="btn-inspector-more-settings">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Photo Quality & Storage Settings
+              </button>
+            </div>
+
+          </div>
+
+        </div> <!-- /inspector-panels-content -->
+
+        <!-- RECENT CAPTURES FILMSTRIP (Directly inside inspector) -->
+        <div class="inspector-recent-section" id="inspector-recent-section">
+          <div class="recent-header">
+            <span>Recent Captures</span>
+            <a href="#gallery" class="recent-link" id="link-view-all-gallery">Gallery &darr;</a>
+          </div>
+          <div class="recent-thumbs-row" id="recent-thumbs-row">
+            <div class="recent-empty-hint">No captures yet</div>
           </div>
         </div>
 
-        <!-- Row 3: Filter Chips -->
-        <div class="filter-presets-bar" id="filter-presets-bar">
-          <!-- Dynamically populated filter chips -->
-        </div>
-
-      </div>
+      </aside> <!-- /studio-inspector -->
 
     </section>
 
