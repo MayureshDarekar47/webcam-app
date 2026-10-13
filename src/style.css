@@ -731,6 +731,8 @@ select:focus-visible {
   100% { transform: scale(0.8); opacity: 0; }
 }
 
+
+
 /* ==========================================================================
    PRIMARY STUDIO CONTROLS & DOCKED DECK
    ========================================================================== */
@@ -1683,78 +1685,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: var(--text-secondary);
 }
 
-/* ==========================================================================
-   PRIVACY & ARCHITECTURE INFO SECTION
-   ========================================================================== */
 
-.privacy-section {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.privacy-header {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.privacy-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-md);
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: #34d399;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.privacy-header h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.privacy-header p {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.privacy-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.25rem;
-}
-
-.privacy-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.privacy-card-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--text-primary);
-}
-
-.privacy-card p {
-  font-size: 0.83rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
 
 /* ==========================================================================
    MODAL DIALOGS (Lightbox, Settings, Shortcuts, Confirm)

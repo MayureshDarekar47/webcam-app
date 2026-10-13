@@ -348,6 +348,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       populateDeviceDropdowns();
       startAudioVuMeter(cameraController.stream);
+
+      // Attach stream to companion video so PiP can run simultaneously with main screen
+      const pipVideo = document.getElementById('pip-companion-video');
+      if (pipVideo) {
+        pipVideo.srcObject = cameraController.stream;
+        pipVideo.play().catch(() => {});
+      }
+
       showToast(`Camera active: ${details.width}×${details.height} @ ${details.frameRate}fps`, 'success');
     },
     onStreamStopped: () => {
@@ -358,6 +366,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       btnQuickStop.classList.add('hidden');
       hudRecordingPill.classList.add('hidden');
       stopAudioVuMeter();
+
+      const pipVideo = document.getElementById('pip-companion-video');
+      if (pipVideo) {
+        pipVideo.srcObject = null;
+      }
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture().catch(() => {});
+      }
     },
     onDevicesChanged: () => {
       populateDeviceDropdowns();
@@ -565,18 +581,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     viewportWrap.classList.toggle('fullscreen-mode', isFull);
   });
 
+  const pipCompanionVideo = document.getElementById('pip-companion-video');
+
+  function updatePipActiveUI(isActive) {
+    btnQuickPip.classList.toggle('active', isActive);
+  }
+
+  if (pipCompanionVideo) {
+    pipCompanionVideo.addEventListener('enterpictureinpicture', () => updatePipActiveUI(true));
+    pipCompanionVideo.addEventListener('leavepictureinpicture', () => updatePipActiveUI(false));
+  }
+  if (videoEl) {
+    videoEl.addEventListener('enterpictureinpicture', () => updatePipActiveUI(true));
+    videoEl.addEventListener('leavepictureinpicture', () => updatePipActiveUI(false));
+  }
+
   async function togglePiP() {
     try {
       if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
-      } else if (document.pictureInPictureEnabled && videoEl.readyState >= 2) {
-        await videoEl.requestPictureInPicture();
+        updatePipActiveUI(false);
+        showToast('Picture-in-Picture closed', 'info', 1500);
+        return;
+      }
+
+      if (!cameraController.isStreaming || !cameraController.stream) {
+        showToast('Please start camera first to open Picture-in-Picture', 'warning');
+        return;
+      }
+
+      if (!document.pictureInPictureEnabled) {
+        showToast('Picture-in-Picture is not supported by your browser', 'warning');
+        return;
+      }
+
+      // Use companion video element so BOTH the main studio stage AND floating window show live camera!
+      if (pipCompanionVideo) {
+        if (pipCompanionVideo.srcObject !== cameraController.stream) {
+          pipCompanionVideo.srcObject = cameraController.stream;
+        }
+        await pipCompanionVideo.play().catch(() => {});
+        await pipCompanionVideo.requestPictureInPicture();
+        updatePipActiveUI(true);
+        showToast('PiP Active: Playing on BOTH screens!', 'success', 2500);
       } else {
-        showToast('Picture-in-Picture not supported or camera stream inactive', 'warning');
+        await videoEl.requestPictureInPicture();
+        updatePipActiveUI(true);
       }
     } catch (e) {
       console.warn('PiP error:', e);
-      showToast('Picture-in-Picture error: ' + e.message, 'warning');
+      showToast('Picture-in-Picture: ' + e.message, 'warning');
     }
   }
 

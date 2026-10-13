@@ -88,6 +88,9 @@
             <span class="countdown-number" id="countdown-number">3</span>
           </div>
 
+          <!-- Companion Video for Simultaneous Picture-in-Picture (Enables Live Video on BOTH Main Screen & Floating Window) -->
+          <video id="pip-companion-video" autoplay playsinline muted aria-hidden="true" style="position: fixed; width: 320px; height: 180px; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;"></video>
+
           <!-- Inactive Placeholder State -->
           <div class="camera-placeholder" id="camera-placeholder">
             <div class="placeholder-icon">
@@ -97,7 +100,6 @@
               </svg>
             </div>
             <h2>Ready to Launch Studio Camera</h2>
-            <p>Click below to grant camera access. Your video is processed 100% locally on your laptop with zero cloud transmissions.</p>
 
             <!-- Error Alert Box -->
             <div class="camera-error-box hidden" id="camera-error-box">
@@ -119,11 +121,6 @@
                 </svg>
                 Start Camera
               </button>
-            </div>
-
-            <div class="privacy-pill">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              100% Client-Side Privacy Guaranteed
             </div>
           </div>
 
@@ -547,55 +544,6 @@
       <div id="gallery-container"></div>
     </section>
 
-    <!-- PRIVACY & SECURITY SECTION -->
-    <section class="privacy-section" id="privacy" aria-label="Privacy & Security">
-      <div class="privacy-header">
-        <div class="privacy-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <div>
-          <h2>Private by Design: 100% In-Browser Execution</h2>
-          <p>Your video feeds, captured photographs, and video recordings never leave your device.</p>
-        </div>
-      </div>
-
-      <div class="privacy-cards-grid">
-        <div class="privacy-card">
-          <div class="privacy-card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Zero Server Uploads
-          </div>
-          <p>There is no backend receiving your camera data. Every photo and recording is rendered and processed completely inside your browser engine.</p>
-        </div>
-
-        <div class="privacy-card">
-          <div class="privacy-card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Sandboxed IndexedDB Storage
-          </div>
-          <p>Saved media is stored in your browser's private IndexedDB database on your local disk. It cannot be accessed by external sites.</p>
-        </div>
-
-        <div class="privacy-card">
-          <div class="privacy-card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Hardware Track Release
-          </div>
-          <p>When you click "Stop Camera" or leave the page, camera tracks are immediately stopped via <code>track.stop()</code>, turning off the physical webcam light.</p>
-        </div>
-
-        <div class="privacy-card">
-          <div class="privacy-card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Standard Browser Security
-          </div>
-          <p>The MediaDevices API requires explicit user permission and a secure context (HTTPS or localhost) enforced by the browser.</p>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <!-- MODALS -->
@@ -755,18 +703,8 @@
   <!-- Footer -->
   <footer class="app-footer">
     <div class="footer-container">
-      <div>
-        <p><strong>Pro Webcam Studio</strong> &bull; Complete Browser Camera & Media Station</p>
-        <p style="font-size: 0.78rem; margin-top: 0.2rem;">All media stays strictly in your browser. Zero cloud transmissions.</p>
-      </div>
-
-      <div class="footer-tech-stack">
-        <span class="tech-tag">MediaDevices API</span>
-        <span class="tech-tag">MediaRecorder API</span>
-        <span class="tech-tag">Canvas 2D</span>
-        <span class="tech-tag">Web Audio API</span>
-        <span class="tech-tag">IndexedDB</span>
-      </div>
+      <p><strong>Pro Webcam Studio</strong> &bull; Local Camera & Recording</p>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">&copy; Pro Webcam Studio</p>
     </div>
   </footer>
 
