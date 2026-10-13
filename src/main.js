@@ -93,6 +93,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sliderSaturation = document.getElementById('slider-saturation');
   const valSaturation = document.getElementById('val-saturation');
   const btnResetAdjustments = document.getElementById('btn-reset-adjustments');
+  const quickZoomChips = document.querySelectorAll('.quick-chip');
+
+  function updateQuickZoomActive(currentVal) {
+    if (!quickZoomChips) return;
+    quickZoomChips.forEach((chip) => {
+      const val = parseFloat(chip.dataset.zoom);
+      chip.classList.toggle('active', Math.abs(val - currentVal) < 0.08);
+    });
+  }
 
   // Timer & Burst
   const selectTimer = document.getElementById('select-timer');
@@ -206,11 +215,111 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  // Audio VU Meter State
+  let audioCtx = null;
+  let vuAnimId = null;
+
+  function startAudioVuMeter(stream) {
+    const vuFill = document.getElementById('audio-vu-fill');
+    const vuText = document.getElementById('audio-vu-text');
+    if (!vuFill) return;
+
+    const audioTracks = stream ? stream.getAudioTracks() : [];
+    if (!audioTracks || audioTracks.length === 0) {
+      if (vuText) vuText.textContent = 'Muted / Off';
+      vuFill.style.width = '4%';
+      return;
+    }
+
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const source = audioCtx.createMediaStreamSource(stream);
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 64;
+      source.connect(analyser);
+
+      const buffer = new Uint8Array(analyser.frequencyBinCount);
+      if (vuText) vuText.textContent = 'Active (Live)';
+
+      function updateMeter() {
+        if (!cameraController.isStreaming) {
+          if (vuFill) vuFill.style.width = '4%';
+          if (vuText) vuText.textContent = 'Standby';
+          return;
+        }
+        analyser.getByteFrequencyData(buffer);
+        let sum = 0;
+        for (let i = 0; i < buffer.length; i++) sum += buffer[i];
+        const avg = sum / buffer.length;
+        const pct = Math.min(100, Math.max(4, Math.round((avg / 128) * 100)));
+        if (vuFill) vuFill.style.width = pct + '%';
+        vuAnimId = requestAnimationFrame(updateMeter);
+      }
+      updateMeter();
+    } catch (err) {
+      console.warn('Audio VU meter error:', err);
+      if (vuText) vuText.textContent = 'Active';
+    }
+  }
+
+  function stopAudioVuMeter() {
+    if (vuAnimId) {
+      cancelAnimationFrame(vuAnimId);
+      vuAnimId = null;
+    }
+    const vuFill = document.getElementById('audio-vu-fill');
+    const vuText = document.getElementById('audio-vu-text');
+    if (vuFill) vuFill.style.width = '4%';
+    if (vuText) vuText.textContent = 'Standby';
+  }
+
+  // Update Inspector Mini Reel
+  function updateRecentCapturesReel(items) {
+    const reelEl = document.getElementById('recent-thumbs-row');
+    if (!reelEl) return;
+    const list = (items || []).slice(0, 4);
+
+    if (list.length === 0) {
+      reelEl.innerHTML = `<div class="recent-empty-hint">No captures yet</div>`;
+      return;
+    }
+
+    reelEl.innerHTML = '';
+    list.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'recent-thumb-item';
+      const time = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      card.title = `${item.type.toUpperCase()}: ${item.name} (${time}) — Click to preview`;
+
+      const url = item.dataUrl || (item.blob ? URL.createObjectURL(item.blob) : '');
+      if (item.type === 'photo') {
+        card.innerHTML = `<img src="${url}" alt="${item.name}" loading="lazy" />`;
+      } else {
+        card.innerHTML = `<video src="${url}" muted preload="metadata"></video>`;
+      }
+
+      card.addEventListener('click', () => {
+        const fullIdx = galleryManager.items.indexOf(item);
+        if (fullIdx !== -1) {
+          galleryManager.openLightbox(fullIdx);
+        }
+      });
+
+      reelEl.appendChild(card);
+    });
+  }
+
   // Initialize Gallery
   const galleryManager = new GalleryManager(galleryContainer, modalLightbox, {
     onItemsChanged: (items) => {
       headerGalleryCount.textContent = items.length;
       updateStorageInfo();
+      updateRecentCapturesReel(items);
     }
   });
 
@@ -218,6 +327,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const existingMedia = await getAllMediaItems();
     galleryManager.setItems(existingMedia);
+    updateRecentCapturesReel(existingMedia);
   } catch (err) {
     console.warn('Error loading media items from storage:', err);
   }
@@ -237,6 +347,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       hudFpsText.textContent = `${details.frameRate} FPS`;
 
       populateDeviceDropdowns();
+      startAudioVuMeter(cameraController.stream);
       showToast(`Camera active: ${details.width}×${details.height} @ ${details.frameRate}fps`, 'success');
     },
     onStreamStopped: () => {
@@ -246,6 +357,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       hudStreamInfo.classList.add('hidden');
       btnQuickStop.classList.add('hidden');
       hudRecordingPill.classList.add('hidden');
+      stopAudioVuMeter();
     },
     onDevicesChanged: () => {
       populateDeviceDropdowns();
@@ -289,6 +401,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     labelTimerVal.textContent = settings.timerDelay === 0 ? 'Off' : `${settings.timerDelay}s`;
     selectBurstCount.value = String(settings.burstCount);
 
+    const stageBurstCountLabel = document.getElementById('stage-burst-count-label');
+    if (stageBurstCountLabel) stageBurstCountLabel.textContent = `${settings.burstCount}x`;
+    updateQuickZoomActive(settings.zoom);
+    updateScopeLevels(settings.brightness, settings.contrast, settings.saturation);
+
     // Settings Modal Inputs
     settingPhotoFormat.value = settings.photoFormat;
     settingPhotoQuality.value = Math.round(settings.photoQuality * 100);
@@ -296,6 +413,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     settingShutterSound.checked = settings.shutterSound;
     settingSoundVolume.value = Math.round(settings.shutterVolume * 100);
     valSoundVolume.textContent = Math.round(settings.shutterVolume * 100) + '%';
+  }
+
+  function updateScopeLevels(b = settings.brightness, c = settings.contrast, s = settings.saturation) {
+    const scopeR = document.getElementById('scope-r');
+    const scopeG = document.getElementById('scope-g');
+    const scopeB = document.getElementById('scope-b');
+    const scopeValR = document.getElementById('scope-val-r');
+    const scopeValG = document.getElementById('scope-val-g');
+    const scopeValB = document.getElementById('scope-val-b');
+    if (!scopeR) return;
+
+    const base = (b / 100) * 72;
+    const contrastFactor = (c / 100);
+    const satFactor = (s / 100);
+
+    const rPct = Math.min(100, Math.max(8, Math.round(base * 1.02 * contrastFactor * (0.85 + 0.15 * satFactor))));
+    const gPct = Math.min(100, Math.max(8, Math.round(base * 1.08 * contrastFactor)));
+    const bPct = Math.min(100, Math.max(8, Math.round(base * 1.03 * contrastFactor * (0.88 + 0.12 * satFactor))));
+
+    scopeR.style.width = rPct + '%';
+    scopeG.style.width = gPct + '%';
+    scopeB.style.width = bPct + '%';
+
+    if (scopeValR) scopeValR.textContent = rPct + '%';
+    if (scopeValG) scopeValG.textContent = gPct + '%';
+    if (scopeValB) scopeValB.textContent = bPct + '%';
   }
 
   async function populateDeviceDropdowns() {
@@ -614,38 +757,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   btnRecordTrigger.addEventListener('click', handleVideoToggle);
   btnRecordPause.addEventListener('click', handleVideoPauseResume);
 
-  /* Drawer Toggles */
-  btnToggleDevices.addEventListener('click', () => {
-    const isOpening = drawerDevices.classList.contains('hidden');
-    drawerDevices.classList.toggle('hidden');
-    drawerAdjustments.classList.add('hidden');
-    drawerTimer.classList.add('hidden');
+  /* Inspector Studio Tab Switches */
+  function switchInspectorTab(tab) {
+    drawerDevices.classList.toggle('hidden', tab !== 'devices');
+    drawerAdjustments.classList.toggle('hidden', tab !== 'adjustments');
+    drawerTimer.classList.toggle('hidden', tab !== 'timer');
 
-    btnToggleDevices.classList.toggle('active', isOpening);
-    btnToggleAdjustments.classList.remove('active');
-    btnToggleTimer.classList.remove('active');
-  });
+    btnToggleDevices.classList.toggle('active', tab === 'devices');
+    btnToggleAdjustments.classList.toggle('active', tab === 'adjustments');
+    btnToggleTimer.classList.toggle('active', tab === 'timer');
 
-  btnToggleAdjustments.addEventListener('click', () => {
-    const isOpening = drawerAdjustments.classList.contains('hidden');
-    drawerAdjustments.classList.toggle('hidden');
-    drawerDevices.classList.add('hidden');
-    drawerTimer.classList.add('hidden');
+    btnToggleDevices.setAttribute('aria-selected', tab === 'devices');
+    btnToggleAdjustments.setAttribute('aria-selected', tab === 'adjustments');
+    btnToggleTimer.setAttribute('aria-selected', tab === 'timer');
+  }
 
-    btnToggleAdjustments.classList.toggle('active', isOpening);
-    btnToggleDevices.classList.remove('active');
-    btnToggleTimer.classList.remove('active');
-  });
+  btnToggleDevices.addEventListener('click', () => switchInspectorTab('devices'));
+  btnToggleAdjustments.addEventListener('click', () => switchInspectorTab('adjustments'));
+  btnToggleTimer.addEventListener('click', () => switchInspectorTab('timer'));
 
-  btnToggleTimer.addEventListener('click', () => {
-    const isOpening = drawerTimer.classList.contains('hidden');
-    drawerTimer.classList.toggle('hidden');
-    drawerDevices.classList.add('hidden');
-    drawerAdjustments.classList.add('hidden');
-
-    btnToggleTimer.classList.toggle('active', isOpening);
-    btnToggleDevices.classList.remove('active');
-    btnToggleAdjustments.classList.remove('active');
+  /* Quick Zoom Preset Chips Event Handlers */
+  quickZoomChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const z = parseFloat(chip.dataset.zoom);
+      sliderZoom.value = z;
+      valZoom.textContent = z.toFixed(1) + 'x';
+      settings.zoom = z;
+      filterManager.setZoom(z);
+      saveSettings(settings);
+      updateQuickZoomActive(z);
+      showToast(`Zoom: ${z.toFixed(1)}x`, 'info', 1200);
+    });
   });
 
   /* Device Controls Listeners */
@@ -682,6 +824,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     valZoom.textContent = val.toFixed(1) + 'x';
     settings.zoom = val;
     filterManager.setZoom(val);
+    updateQuickZoomActive(val);
   });
 
   sliderZoom.addEventListener('change', () => saveSettings(settings));
@@ -691,6 +834,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     valBrightness.textContent = val + '%';
     settings.brightness = val;
     filterManager.setAdjustments({ brightness: val });
+    updateScopeLevels(val, settings.contrast, settings.saturation);
   });
   sliderBrightness.addEventListener('change', () => saveSettings(settings));
 
@@ -699,6 +843,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     valContrast.textContent = val + '%';
     settings.contrast = val;
     filterManager.setAdjustments({ contrast: val });
+    updateScopeLevels(settings.brightness, val, settings.saturation);
   });
   sliderContrast.addEventListener('change', () => saveSettings(settings));
 
@@ -707,6 +852,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     valSaturation.textContent = val + '%';
     settings.saturation = val;
     filterManager.setAdjustments({ saturation: val });
+    updateScopeLevels(settings.brightness, settings.contrast, val);
   });
   sliderSaturation.addEventListener('change', () => saveSettings(settings));
 
@@ -724,6 +870,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     sliderSaturation.value = '100';
     valSaturation.textContent = '100%';
     filterManager.resetAll();
+    updateQuickZoomActive(1.0);
+    updateScopeLevels(100, 100, 100);
     saveSettings(settings);
     showToast('Adjustments reset', 'info', 1500);
   });
@@ -737,8 +885,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   selectBurstCount.addEventListener('change', (e) => {
     settings.burstCount = parseInt(e.target.value, 10);
+    const stageBurstCountLabel = document.getElementById('stage-burst-count-label');
+    if (stageBurstCountLabel) stageBurstCountLabel.textContent = `${settings.burstCount}x`;
     saveSettings(settings);
   });
+
+  // Inspector Quick More Settings button
+  const btnInspectorMoreSettings = document.getElementById('btn-inspector-more-settings');
+  if (btnInspectorMoreSettings) {
+    btnInspectorMoreSettings.addEventListener('click', () => {
+      updateStorageInfo();
+      modalSettings.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+    });
+  }
+
+  // Smooth Gallery link from inspector
+  const linkViewAllGallery = document.getElementById('link-view-all-gallery');
+  if (linkViewAllGallery) {
+    linkViewAllGallery.addEventListener('click', (e) => {
+      e.preventDefault();
+      const gallerySec = document.getElementById('gallery');
+      if (gallerySec) gallerySec.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 
   /* Quick Viewport Buttons */
   btnQuickMirror.addEventListener('click', toggleMirror);
@@ -886,6 +1056,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else {
         closeShortcutsModal();
       }
+    },
+    onModePhoto: () => {
+      setMode('photo');
+      showToast('Switched to Photo mode', 'info', 1200);
+    },
+    onModeVideo: () => {
+      setMode('video');
+      showToast('Switched to Video mode', 'info', 1200);
+    },
+    onModeBurst: () => {
+      setMode('burst');
+      showToast('Switched to Burst mode', 'info', 1200);
     },
     onEscape: () => {
       closeSettingsModal();

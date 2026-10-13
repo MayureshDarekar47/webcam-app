@@ -73,6 +73,18 @@ export class ShortcutsManager {
         if (this.handlers.onCycleFilter) this.handlers.onCycleFilter();
         break;
 
+      case '1':
+        if (this.handlers.onModePhoto) this.handlers.onModePhoto();
+        break;
+
+      case '2':
+        if (this.handlers.onModeVideo) this.handlers.onModeVideo();
+        break;
+
+      case '3':
+        if (this.handlers.onModeBurst) this.handlers.onModeBurst();
+        break;
+
       case '?':
         e.preventDefault();
         if (this.handlers.onToggleHelp) this.handlers.onToggleHelp();
