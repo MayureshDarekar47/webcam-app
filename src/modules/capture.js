@@ -8,6 +8,7 @@ export class PhotoCaptureEngine {
   constructor(videoElement, filterManager, options = {}) {
     this.video = videoElement;
     this.filterManager = filterManager;
+    this.lensCanvas = options.lensCanvas || null;
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d', { willReadFrequently: false });
 
@@ -71,6 +72,11 @@ export class PhotoCaptureEngine {
 
     // Reset canvas filter
     ctx.filter = 'none';
+
+    // Draw active Snapchat AR Lens overlay if present
+    if (this.lensCanvas && this.lensCanvas.width > 0 && this.lensCanvas.height > 0) {
+      ctx.drawImage(this.lensCanvas, 0, 0, videoWidth, videoHeight);
+    }
 
     // MIME type selection
     let mimeType = 'image/png';

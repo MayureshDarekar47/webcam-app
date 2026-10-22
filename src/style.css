@@ -3,37 +3,38 @@
    ========================================================================== */
 
 :root {
-  --bg-primary: #0a0d14;
-  --bg-secondary: #0f1420;
-  --bg-surface: #141a29;
-  --bg-surface-elevated: #1a2336;
-  --bg-card: rgba(20, 26, 41, 0.75);
-  --bg-glass: rgba(15, 20, 32, 0.65);
-  --bg-overlay: rgba(5, 7, 12, 0.85);
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-surface: #1a1a1a;
+  --bg-surface-elevated: #222222;
+  --bg-card: rgba(20, 20, 20, 0.85);
+  --bg-glass: rgba(10, 10, 10, 0.75);
+  --bg-overlay: rgba(0, 0, 0, 0.9);
 
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.14);
   --border-hover: rgba(255, 255, 255, 0.24);
-  --border-active: #3b82f6;
+  --border-active: #FFFC00;
 
-  --color-primary: #3b82f6;
-  --color-primary-hover: #60a5fa;
-  --color-primary-rgb: 59, 130, 246;
+  /* Snapchat Yellow Primary */
+  --color-primary: #FFFC00;
+  --color-primary-hover: #ffe800;
+  --color-primary-rgb: 255, 252, 0;
 
-  --color-accent: #06b6d4;
-  --color-accent-rgb: 6, 182, 212;
+  --color-accent: #FFFC00;
+  --color-accent-rgb: 255, 252, 0;
 
   --color-danger: #ef4444;
   --color-danger-hover: #dc2626;
   --color-danger-rgb: 239, 68, 68;
 
   --color-warning: #f59e0b;
-  --color-success: #10b981;
+  --color-success: #22c55e;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-dim: #475569;
+  --text-primary: #ffffff;
+  --text-secondary: #999999;
+  --text-muted: #666666;
+  --text-dim: #444444;
 
   --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, Monaco, monospace;
@@ -45,10 +46,10 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow-blue: 0 0 25px rgba(59, 130, 246, 0.25);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.65);
+  --shadow-glow-snap: 0 0 25px rgba(255, 252, 0, 0.3);
   --shadow-glow-red: 0 0 25px rgba(239, 68, 68, 0.35);
 
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -117,12 +118,17 @@ select:focus-visible {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(10, 13, 20, 0.92);
+  background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid rgba(255, 252, 0, 0.12);
   padding: 0.65rem 1.25rem;
   width: 100%;
+}
+
+/* Snapchat-specific header styling */
+.snap-header {
+  background: rgba(0, 0, 0, 0.95);
 }
 
 .header-container {
@@ -142,37 +148,53 @@ select:focus-visible {
 }
 
 .logo-icon {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  background: #FFFC00;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+  color: #000;
+  box-shadow: 0 0 18px rgba(255, 252, 0, 0.45);
 }
 
-.brand-info h1 {
+/* Snapchat Ghost Icon specific */
+.snap-ghost-logo {
+  background: #FFFC00;
+  border-radius: 10px;
+  color: #000;
+}
+
+.brand-info h1,
+.snap-brand-title {
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(90deg, #ffffff 40%, #94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: #ffffff;
+  color: #ffffff;
 }
 
 .brand-badge {
   font-size: 0.68rem;
   padding: 0.15rem 0.5rem;
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #60a5fa;
+  background: rgba(255, 252, 0, 0.15);
+  border: 1px solid rgba(255, 252, 0, 0.4);
+  color: #FFFC00;
   border-radius: var(--radius-full);
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-left: 0.35rem;
+}
+
+.snap-badge {
+  background: #FFFC00;
+  color: #000000;
+  border-color: #FFFC00;
+  font-weight: 800;
 }
 
 .header-status-pill {
@@ -230,16 +252,17 @@ select:focus-visible {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: var(--shadow-sm), 0 0 12px rgba(59, 130, 246, 0.3);
+  background: #FFFC00;
+  color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-sm), 0 0 12px rgba(255, 252, 0, 0.3);
+  font-weight: 700;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  background: #ffe800;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md), 0 0 18px rgba(59, 130, 246, 0.5);
+  box-shadow: var(--shadow-md), 0 0 20px rgba(255, 252, 0, 0.5);
 }
 
 .btn-secondary {
@@ -408,6 +431,16 @@ select:focus-visible {
   display: block;
   transition: transform 0.2s ease, filter 0.2s ease;
   background: #000;
+}
+
+.snapchat-lens-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 12;
+  object-fit: cover;
 }
 
 /* Placeholder / Inactive Camera Overlay */
@@ -747,7 +780,86 @@ select:focus-visible {
 
 
 /* ==========================================================================
-   PRIMARY STUDIO CONTROLS & DOCKED DECK (COMPACT SINGLE-ROW COCKPIT)
+   SNAPCHAT LENS OPTICAL EFFECTS & ACTIVE BADGE
+   ========================================================================== */
+
+/* Optical Lens Transition Ripple on Viewfinder */
+.snapchat-lens-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 22;
+  opacity: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.5) 0%, rgba(59, 130, 246, 0.3) 40%, transparent 72%);
+}
+
+.snapchat-lens-ripple.rippling {
+  animation: snapchat-lens-flash 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes snapchat-lens-flash {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+/* Snapchat Active Lens Pill Indicator (Top Center of Viewfinder) */
+.lens-active-indicator {
+  position: absolute;
+  top: 1.15rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: rgba(10, 14, 25, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(59, 130, 246, 0.3);
+  z-index: 35;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lens-active-indicator.pop-in {
+  animation: lens-pill-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.lens-active-indicator.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+@keyframes lens-pill-pop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-15px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   PRIMARY STUDIO CONTROLS & SNAPCHAT LENS COCKPIT
    ========================================================================== */
 
 .studio-capture-bar {
@@ -756,57 +868,36 @@ select:focus-visible {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: auto;
-  max-width: min(96vw, 1120px);
+  width: calc(100% - 1.5rem);
+  max-width: min(96vw, 680px);
   margin: 0;
   padding: 0;
   z-index: 25;
   pointer-events: auto;
+  gap: 0.45rem;
 }
 
-/* Master Compact Cockpit Dock - Balanced & Centered */
-.capture-main-deck {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(10, 14, 25, 0.92);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-full);
-  padding: 0.42rem 1.25rem;
-  gap: 1rem;
-  width: auto;
-  max-width: min(96vw, 1120px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.deck-wing {
+/* Centered Mode Selector Bar above lenses */
+.capture-mode-bar {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  justify-content: center;
+  width: 100%;
 }
 
-.deck-wing.deck-left {
-  justify-content: flex-end;
-}
-
-.deck-wing.deck-right {
-  justify-content: flex-start;
-  min-width: 0;
-}
-
-/* Mode Selector (Integrated on Left Wing) */
 .mode-selector {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-subtle);
+  background: rgba(10, 14, 25, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-full);
   padding: 0.2rem;
   gap: 0.2rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .mode-btn {
@@ -830,116 +921,337 @@ select:focus-visible {
 }
 
 .mode-btn.active {
-  background: var(--bg-surface-elevated);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  background: #FFFC00;
+  color: #000000;
+  border-color: #FFFC00;
+  box-shadow: 0 0 12px rgba(255, 252, 0, 0.35);
+  font-weight: 700;
 }
 
-/* Center Hero: Shutter & Recording Buttons (Compact Ergonomic Size) */
-.capture-controls-group {
+/* ==========================================================================
+   SNAPCHAT LENS CAROUSEL
+   ========================================================================== */
+
+.snapchat-lens-carousel-wrap {
+  width: 100%;
+  max-width: 580px;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%);
+}
+
+.lens-carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.4rem 2rem;
+}
+
+.lens-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Circular Snapchat Lens Badge */
+.snapchat-lens-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+  opacity: 0.75;
+}
+
+.snapchat-lens-btn:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.snapchat-lens-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-size: cover;
+  position: relative;
+}
+
+.lens-badge-icon {
+  font-size: 1.3rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+  transition: transform 0.25s ease;
+}
+
+.lens-badge-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  max-width: 66px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+/* ACTIVE LENS HIGHLIGHT - Snapchat Yellow */
+.snapchat-lens-btn.active {
+  opacity: 1;
+  transform: scale(1.18);
+}
+
+.snapchat-lens-btn.active .snapchat-lens-badge {
+  border: 3px solid #FFFC00;
+  box-shadow: 0 0 0 2px rgba(255, 252, 0, 0.5), 0 0 20px rgba(255, 252, 0, 0.4);
+}
+
+.snapchat-lens-btn.active .lens-badge-icon {
+  transform: scale(1.15);
+}
+
+.snapchat-lens-btn.active .lens-badge-label {
+  color: #FFFC00;
+  font-weight: 700;
+}
+
+/* Master Compact Cockpit Dock - Snapchat Black Style */
+.capture-main-deck {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  padding: 0.42rem 1rem;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.deck-wing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deck-wing.deck-left {
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.deck-wing.deck-right {
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Snapchat Explore Lenses Button - Yellow Accent */
+.btn-explore-pill {
+  color: #FFFC00 !important;
+  border-color: rgba(255, 252, 0, 0.35) !important;
+  background: rgba(255, 252, 0, 0.1) !important;
+}
+
+.btn-explore-pill:hover {
+  background: rgba(255, 252, 0, 0.22) !important;
+  color: #fff !important;
+  box-shadow: 0 0 14px rgba(255, 252, 0, 0.35);
+}
+
+/* Center Hero: Unified Snapchat Camera Shutter (Compact Ergonomic Size) */
+.capture-controls-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
 .btn-capture-shutter {
-  width: 54px;
-  height: 54px;
+  position: relative;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid var(--bg-surface);
-  box-shadow: 0 0 0 2.5px rgba(255, 255, 255, 0.45), 0 4px 16px rgba(0, 0, 0, 0.45);
+  background: transparent;
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   outline: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .btn-capture-shutter:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 0 3.5px rgba(255, 255, 255, 0.75), 0 0 18px rgba(255, 255, 255, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 0 16px rgba(255, 255, 255, 0.5);
 }
 
-.btn-capture-shutter:active {
+.btn-capture-shutter:active:not(.recording):not(.locked-recording) {
   transform: scale(0.92);
 }
 
 .btn-capture-shutter .shutter-inner {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #f8fafc;
-  border: 2px solid #cbd5e1;
-  transition: var(--transition-fast);
+  background: #ffffff;
+  border: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
 }
 
-.btn-record-trigger {
-  width: 54px;
-  height: 54px;
+/* SNAPCHAT SHUTTER RECORDING & LOCKED STATES */
+.btn-capture-shutter.recording {
+  border-color: #ef4444;
+  transform: scale(1.12);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.45), 0 0 24px rgba(239, 68, 68, 0.7);
+}
+
+.btn-capture-shutter.recording .shutter-inner {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: rgba(239, 68, 68, 0.2);
-  border: 3px solid var(--bg-surface);
-  box-shadow: 0 0 0 2.5px rgba(239, 68, 68, 0.5), 0 4px 16px rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
-  cursor: pointer;
+  background: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.85);
+  animation: snapRecPulse 1.1s infinite ease-in-out;
 }
 
-.btn-record-trigger:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 0 3.5px rgba(239, 68, 68, 0.75), 0 0 18px rgba(239, 68, 68, 0.65);
+.btn-capture-shutter.locked-recording {
+  border-color: #ffffff;
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 0 24px rgba(239, 68, 68, 0.75);
 }
 
-.btn-record-trigger:active {
-  transform: scale(0.92);
-}
-
-.btn-record-trigger .record-inner {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--color-danger);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.btn-record-trigger.recording .record-inner {
+.btn-capture-shutter.locked-recording .shutter-inner {
   width: 22px;
   height: 22px;
-  border-radius: var(--radius-xs);
-  background: #ffffff;
+  border-radius: 5px;
+  background: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.9);
+  animation: none;
+  transform: none;
 }
 
-.btn-record-pause {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-medium);
-  color: var(--text-primary);
+@keyframes snapRecPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.85); opacity: 0.85; }
+}
+
+/* SNAPCHAT SLIDE-TO-LOCK FLOATING PILL */
+.snap-lock-pill {
+  position: absolute;
+  bottom: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(10, 14, 25, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+  z-index: 60;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.snap-lock-pill:hover {
+  background: rgba(20, 26, 42, 0.95);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.snap-lock-pill.locked {
+  background: rgba(255, 252, 0, 0.18) !important;
+  border-color: #fffc00 !important;
+  color: #fffc00 !important;
+  box-shadow: 0 0 18px rgba(255, 252, 0, 0.5) !important;
+}
+
+.snap-lock-pill .lock-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-fast);
-  cursor: pointer;
 }
 
-.btn-record-pause:hover {
-  background: var(--bg-primary);
-  border-color: var(--border-hover);
-  transform: scale(1.05);
+.snap-lock-pill .lock-chevron-anim {
+  font-weight: 800;
+  color: #fffc00;
+  animation: snapLockBounce 0.8s infinite alternate ease-in-out;
 }
 
-.btn-record-pause.paused {
-  background: var(--color-warning);
-  color: #000;
-  border-color: #f59e0b;
+@keyframes snapLockBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* SHUTTER CIRCULAR PROGRESS RING */
+.shutter-progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.shutter-progress-ring.active {
+  opacity: 1;
+}
+
+.progress-ring-bg {
+  stroke: rgba(255, 255, 255, 0.2);
+}
+
+.progress-ring-fill {
+  stroke: #ef4444;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.15s linear;
+}
+
+.btn-record-trigger,
+.btn-record-pause {
+  display: none !important;
 }
 
 /* Filter Strip (Integrated on Right Wing - Expanded) */
@@ -1169,10 +1481,11 @@ select:focus-visible {
 }
 
 .inspector-nav-tab.active {
-  color: #fff;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-medium);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  color: #000;
+  background: #FFFC00;
+  border: 1px solid #FFFC00;
+  box-shadow: 0 0 10px rgba(255, 252, 0, 0.3);
+  font-weight: 700;
 }
 
 /* Inspector Panels Area */
@@ -1567,8 +1880,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .tab-btn.active {
-  background: var(--bg-surface-elevated);
-  color: #fff;
+  background: #FFFC00;
+  color: #000000;
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(255, 252, 0, 0.25);
 }
 
 .tab-count {
@@ -1846,6 +2161,277 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: #fff;
 }
 
+/* ==========================================================================
+   SNAPCHAT LENS EXPLORER (SEARCH & ROW-WISE CATALOG)
+   ========================================================================== */
+
+.lens-explorer-box {
+  max-width: 660px;
+  width: 95vw;
+  max-height: 86vh;
+  padding: 1.25rem;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 252, 0, 0.15);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+}
+
+.lens-explorer-header {
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lens-explorer-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-primary);
+}
+
+.lens-explorer-title svg {
+  color: #FFFC00;
+}
+
+.lens-explorer-title h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #FFFC00 0%, #ffffff 60%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Search Bar in Lens Explorer */
+.lens-search-bar {
+  width: 100%;
+}
+
+.lens-search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.lens-search-input-wrap .search-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.lens-search-input-wrap input[type="search"] {
+  width: 100%;
+  padding: 0.65rem 2.25rem 0.65rem 2.5rem;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.lens-search-input-wrap input[type="search"]:focus {
+  border-color: #FFFC00;
+  box-shadow: 0 0 16px rgba(255, 252, 0, 0.2);
+}
+
+.lens-search-clear {
+  position: absolute;
+  right: 0.75rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Categories Bar in Lens Explorer */
+.lens-categories-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.15rem 0;
+}
+
+.lens-categories-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.lens-cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.lens-cat-chip:hover {
+  color: #fff;
+  border-color: var(--border-hover);
+}
+
+.lens-cat-chip.active {
+  background: #FFFC00;
+  border-color: #FFFC00;
+  color: #000000;
+  font-weight: 800;
+  box-shadow: 0 0 12px rgba(255, 252, 0, 0.35);
+}
+
+/* Row-wise Lens Cards in Explorer */
+.lens-explorer-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 480px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 0.25rem;
+}
+
+.lens-row-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.lens-row-card:hover {
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.lens-row-card.active {
+  background: rgba(255, 252, 0, 0.08);
+  border-color: #FFFC00;
+  box-shadow: 0 0 10px rgba(255, 252, 0, 0.15);
+}
+
+.lens-row-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.lens-row-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.lens-row-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lens-row-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lens-row-category {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.lens-row-tagline {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lens-row-try-btn {
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.lens-row-card.active .lens-row-try-btn {
+  background: #FFFC00;
+  border-color: #FFFC00;
+  color: #000000;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(255, 252, 0, 0.35);
+}
+
+.lens-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  gap: 0.65rem;
+}
+
+.empty-lens-icon {
+  font-size: 2.5rem;
+}
+
+.lens-empty-state h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.lens-empty-state p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 /* Lightbox Specifics */
 .lightbox-box {
   max-width: 1100px;
@@ -2079,12 +2665,22 @@ kbd {
   100% { transform: scale(0.95); opacity: 0.8; }
 }
 
-/* ==========================================================================
-   RESPONSIVENESS (Mobile & Tablet)
-   ========================================================================== */
+/* Flip Camera Animation */
+@keyframes flip-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
+.flipping svg {
+  animation: flip-spin 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.drawer-drag-handle {
+  display: none;
+}
 
 /* ==========================================================================
-   RESPONSIVENESS (Laptop, Tablet & Mobile Ergonomics)
+   RESPONSIVENESS (Laptop, Tablet & Native Mobile Ergonomics)
    ========================================================================== */
 
 /* Laptop displays with restricted vertical heights (e.g., 768p / 900p / 1080p scaled) */
@@ -2125,93 +2721,1022 @@ kbd {
   }
 }
 
-/* Tablet & Mobile Screens (< 1024px) */
-@media (max-width: 1023px) {
+/* Tablet Screens (769px to 1023px) */
+@media (max-width: 1023px) and (min-width: 769px) {
   .camera-workspace {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .studio-inspector {
-    min-height: auto;
-  }
-
-  .inspector-panels-content {
-    max-height: 380px;
-  }
-}
-
-/* Mobile Screens (<= 768px) */
-@media (max-width: 768px) {
-  .app-header {
-    padding: 0.6rem 1rem;
-  }
-
-  .main-content {
-    padding: 0.75rem;
-    gap: 1.25rem;
-  }
-
-  .camera-workspace {
-    border-radius: var(--radius-lg);
-    padding: 0.75rem;
+    width: 100%;
   }
 
   .camera-viewport-wrap {
-    height: auto;
-    aspect-ratio: 16 / 9;
-    min-height: 220px;
+    min-height: 480px;
+    height: 62vh;
   }
 
-  .capture-main-deck {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0.75rem;
-  }
-
-  .mode-selector {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .mode-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 0.45rem 0.4rem;
-    font-size: 0.78rem;
-  }
-
-  .stage-quick-actions {
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.25rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-capture-shutter,
-  .btn-record-trigger {
-    width: 64px;
-    height: 64px;
-  }
-
-  .btn-capture-shutter .shutter-inner,
-  .btn-record-trigger .record-inner {
-    width: 48px;
-    height: 48px;
+  .studio-inspector {
+    width: 360px;
   }
 
   .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+/* ==========================================================================
+   MOBILE PHONES & SMALL TOUCH DEVICES (<= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Prevent tap zoom delay and native app feel */
+  button, a, input, select {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .toast-container {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
+  /* Fullscreen Edge-to-Edge Snapchat Viewport */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    background: #000000 !important;
+    position: fixed !important;
+    inset: 0 !important;
+  }
+
+  /* Hide Desktop Footer entirely on Mobile */
+  .app-footer {
+    display: none !important;
+  }
+
+  /* Snapchat Floating Top Bar */
+  .app-header {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 60 !important;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%) !important;
+    border: none !important;
+    border-bottom: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: max(0.6rem, env(safe-area-inset-top, 0.6rem)) 1rem 0.5rem !important;
+    margin: 0 !important;
+  }
+
+  .header-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .brand-section {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .logo-icon {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #fffc00 !important;
+    color: #000000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .logo-icon svg {
+    stroke: none !important;
+    fill: #000000 !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .brand-info h1 {
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  .header-status-pill,
+  #btn-open-tools,
+  #btn-jump-gallery,
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+  }
+
+  .header-actions .btn-icon {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: rgba(15, 20, 30, 0.65) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Main Viewport & Camera Workspace: 100% Edge-to-Edge */
+  .main-content {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .camera-workspace,
+  .studio-stage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .camera-viewport-wrap {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #000000 !important;
+    aspect-ratio: auto !important;
+  }
+
+  #webcam-video {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    object-fit: cover !important;
+  }
+
+  .camera-viewport-wrap::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 280px !important;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.6) 55%, transparent 100%) !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
+  }
+
+  /* Inactive Camera State: Centered Glass Card */
+  .camera-placeholder {
+    position: absolute !important;
+    top: 48% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    padding: 1.5rem 1.25rem !important;
+    background: rgba(12, 16, 28, 0.8) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-radius: 28px !important;
+    max-width: 290px !important;
+    width: 82% !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85) !important;
+    text-align: center !important;
+    z-index: 20 !important;
+    margin: 0 !important;
+  }
+
+  .camera-placeholder .placeholder-icon {
+    width: 48px !important;
+    height: 48px !important;
+    margin: 0 auto 0.5rem !important;
+    color: #fffc00 !important;
+  }
+
+  .camera-placeholder h2 {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.25rem !important;
+    color: #ffffff !important;
+  }
+
+  .camera-placeholder p {
+    font-size: 0.8rem !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin: 0 auto 1rem !important;
+  }
+
+  .btn-start-camera {
+    padding: 0.75rem 1.6rem !important;
+    font-size: 0.95rem !important;
+    border-radius: 50px !important;
+    background: linear-gradient(135deg, #fffc00 0%, #f59e0b 100%) !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba(255, 252, 0, 0.4) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    cursor: pointer !important;
+  }
+
+  /* Snapchat Vertical Floating Rail on Top-Right */
+  .hud-top-right {
+    top: 65px !important;
+    right: 12px !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    z-index: 45 !important;
+    position: absolute !important;
+  }
+
+  .hud-top-right .viewport-quick-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    background: rgba(10, 14, 25, 0.55) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .hud-top-right .viewport-quick-btn svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .hud-top-right .viewport-quick-btn.mobile-hide {
+    display: none !important;
+  }
+
+  .hud-btn-badge {
+    position: absolute !important;
+    bottom: -3px !important;
+    right: -3px !important;
+    font-size: 0.56rem !important;
+    font-weight: 800 !important;
+    padding: 1px 4px !important;
+    border-radius: 8px !important;
+    background: #fffc00 !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+    display: none !important;
+  }
+
+  .hud-btn-badge.active {
+    display: block !important;
+  }
+
+  .hud-top-left {
+    top: 65px !important;
+    left: 14px !important;
+    position: absolute !important;
+  }
+
+  .hud-bottom-left,
+  .hud-bottom-right {
+    display: none !important;
+  }
+
+  /* ==========================================================================
+     SNAPCHAT BOTTOM CONTROLS DOCK - 100% CENTERED (ZERO SHIFT, ZERO OVERLAP)
+     ========================================================================== */
+  .studio-capture-bar {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    transform: none !important; /* CRITICAL FIX: Overrides desktop translate */
+    margin: 0 !important;
+    padding: 0 0 max(1.1rem, env(safe-area-inset-bottom, 1.1rem)) 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    z-index: 50 !important;
+    pointer-events: auto !important;
+    background: transparent !important;
+  }
+
+  /* Layer 1: Minimal Mode Selector Text (PHOTO · VIDEO · BURST) */
+  .capture-mode-bar {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .mode-selector {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    gap: 1.8rem !important;
+    padding: 0 !important;
+  }
+
+  .mode-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 1.8px !important;
+    text-transform: uppercase !important;
+    padding: 0.25rem 0.5rem !important;
+    position: relative !important;
+    cursor: pointer !important;
+  }
+
+  .mode-btn svg {
+    display: none !important;
+  }
+
+  .mode-btn.active {
+    color: #fffc00 !important;
+    text-shadow: 0 0 12px rgba(255, 252, 0, 0.65) !important;
+  }
+
+  .mode-btn.active::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -4px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 14px !important;
+    height: 3px !important;
+    border-radius: 2px !important;
+    background: #fffc00 !important;
+    box-shadow: 0 0 8px #fffc00 !important;
+  }
+
+  /* Layer 2: Swipeable Horizontal Snapchat Circular Lens Carousel */
+  .snapchat-lens-carousel-wrap {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-bottom: 0.65rem !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    display: block !important;
+  }
+
+  .snapchat-lens-carousel-wrap::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .lens-carousel-track {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.85rem !important;
+    padding: 0.3rem 1.25rem !important;
+    width: max-content !important;
+  }
+
+  .snapchat-lens-btn {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    flex: 0 0 auto !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .snapchat-lens-badge {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    border: 2.5px solid rgba(255, 255, 255, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.4rem !important;
+    background: rgba(18, 22, 32, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease !important;
+  }
+
+  .snapchat-lens-btn.active .snapchat-lens-badge {
+    width: 54px !important;
+    height: 54px !important;
+    border-color: #fffc00 !important;
+    box-shadow: 0 0 18px rgba(255, 252, 0, 0.8), inset 0 0 8px rgba(255, 252, 0, 0.35) !important;
+    transform: scale(1.1) !important;
+  }
+
+  .snapchat-lens-label {
+    font-size: 0.64rem !important;
+    font-weight: 700 !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    max-width: 54px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  .snapchat-lens-btn.active .snapchat-lens-label {
+    color: #fffc00 !important;
+    font-weight: 800 !important;
+  }
+
+  /* Layer 3: Symmetrical 3-Button Bottom Dock (Memories · Shutter · Lenses) */
+  .capture-main-deck {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important; /* Perfect Center Alignment */
+    gap: 36px !important; /* Elegant Breathing Space */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .deck-wing.deck-left,
+  .deck-wing.deck-right {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .capture-controls-group#snap-shutter-wrap {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Center: Iconic 78px White Shutter Ring */
+  .btn-capture-shutter {
+    width: 78px !important;
+    height: 78px !important;
+    border-radius: 50% !important;
+    border: 4.5px solid #ffffff !important;
+    background: transparent !important;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4), 0 6px 24px rgba(0, 0, 0, 0.7) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    position: relative !important;
+    touch-action: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  .btn-capture-shutter .shutter-inner {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    pointer-events: none !important;
+  }
+
+  .btn-capture-shutter:active:not(.recording):not(.locked-recording) .shutter-inner {
+    transform: scale(0.88) !important;
+  }
+
+  /* Snapchat Mobile Holding / Recording state */
+  .btn-capture-shutter.recording {
+    border-color: #ef4444 !important;
+    transform: scale(1.14) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.45), 0 0 30px rgba(239, 68, 68, 0.8) !important;
+  }
+
+  .btn-capture-shutter.recording .shutter-inner {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #ef4444 !important;
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.9) !important;
+    animation: snapRecPulseMobile 1.1s infinite ease-in-out !important;
+  }
+
+  /* Snapchat Mobile Locked Hands-Free Recording State */
+  .btn-capture-shutter.locked-recording {
+    border-color: #ffffff !important;
+    transform: scale(1.08) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45), 0 0 30px rgba(239, 68, 68, 0.8) !important;
+  }
+
+  .btn-capture-shutter.locked-recording .shutter-inner {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 6px !important;
+    background: #ef4444 !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.95) !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  @keyframes snapRecPulseMobile {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.84); opacity: 0.85; }
+  }
+
+  /* Mobile Slide-to-lock pill */
+  .snap-lock-pill {
+    position: absolute !important;
+    bottom: 96px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    padding: 7px 16px !important;
+    border-radius: 9999px !important;
+    background: rgba(10, 14, 25, 0.9) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+    color: #ffffff !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8) !important;
+    z-index: 60 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  .snap-lock-pill.locked {
+    background: rgba(255, 252, 0, 0.22) !important;
+    border-color: #fffc00 !important;
+    color: #fffc00 !important;
+    box-shadow: 0 0 20px rgba(255, 252, 0, 0.5) !important;
+  }
+
+  /* Mobile Shutter Progress Ring */
+  .shutter-progress-ring {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 94px !important;
+    height: 94px !important;
+    transform: translate(-50%, -50%) rotate(-90deg) !important;
+    pointer-events: none !important;
+    z-index: 4 !important;
+  }
+
+  /* Redundant video trigger buttons completely hidden */
+  .btn-record-trigger,
+  .btn-record-pause {
+    display: none !important;
+  }
+
+  /* Left: Memories Thumbnail Button */
+  .stage-recent-thumb-btn {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .stage-thumb-inner {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #ffffff !important;
+  }
+
+  .gallery-count-badge {
+    position: absolute !important;
+    top: -5px !important;
+    right: -5px !important;
+    background: #fffc00 !important;
+    color: #000000 !important;
+    font-size: 0.62rem !important;
+    font-weight: 800 !important;
+    padding: 1px 5px !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #000 !important;
+  }
+
+  /* Right: Snapchat Lens Search Button */
+  .btn-explore-pill.btn-snap-explore {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #fffc00 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+    cursor: pointer !important;
+  }
+
+  .btn-explore-pill.btn-snap-explore:active {
+    transform: scale(0.92) !important;
+    background: rgba(255, 252, 0, 0.25) !important;
+    border-color: #fffc00 !important;
+  }
+
+  /* Lens Explorer Bottom Sheet on Mobile */
+  .lens-explorer-box {
+    width: 100vw;
+    max-width: 100vw;
+    height: auto;
+    max-height: 85vh;
+    max-height: 85dvh;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 24px 24px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid var(--border-medium);
+    padding: 1rem 0.85rem;
+  }
+
+  .lens-explorer-grid {
+    max-height: calc(85dvh - 160px);
+  }
+
+  .lens-categories-bar {
+    gap: 0.35rem;
+    width: max-content;
+  }
+
+  .filter-chip {
+    padding: 0.28rem 0.7rem;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    border-radius: var(--radius-full);
+  }
+
+  /* MOBILE BOTTOM SHEET FOR STUDIO TOOLS INSPECTOR */
+  .studio-inspector {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     max-width: 100%;
+    height: auto;
+    max-height: 85vh;
+    max-height: 85dvh;
+    border-radius: 24px 24px 0 0;
+    border-left: none;
+    border-top: 1px solid var(--border-medium);
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.85);
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .studio-inspector.drawer-open {
+    transform: translateY(0);
+  }
+
+  .studio-inspector.drawer-closed {
+    transform: translateY(100%);
+  }
+
+  .drawer-drag-handle {
+    width: 44px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-full);
+    margin: 0.65rem auto 0.25rem;
+    display: block;
+    cursor: grab;
+  }
+
+  .inspector-header {
+    padding: 0.65rem 1rem;
+  }
+
+  .inspector-tab-nav {
+    padding: 0.25rem 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .inspector-nav-tab {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.82rem;
+  }
+
+  .inspector-panels-content {
+    padding: 0.85rem;
+    max-height: calc(85dvh - 160px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.85rem;
+  }
+
+  /* Touch Sliders in Drawer */
+  input[type="range"] {
+    height: 8px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+  }
+
+  .quick-chip {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.82rem;
+    min-height: 38px;
+  }
+
+  .custom-select {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Snapchat Memories Bottom Sheet on Mobile */
+  .gallery-section {
+    position: fixed;
+    inset: 0;
+    z-index: 950;
+    background: #080b12;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    border: none;
+    overflow: hidden;
+  }
+
+  .gallery-section.gallery-sheet-open {
+    transform: translateY(0);
+  }
+
+  .gallery-sheet-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: max(0.6rem, env(safe-area-inset-top, 0.6rem)) 1rem 0.4rem;
+    background: rgba(10, 14, 25, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gallery-sheet-handle {
+    width: 44px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .btn-close-gallery-sheet {
+    position: absolute;
+    right: 1rem;
+    top: max(0.6rem, env(safe-area-inset-top, 0.6rem));
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .gallery-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(10, 14, 25, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .gallery-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0.2rem;
+  }
+
+  .gallery-tabs .tab-btn {
+    justify-content: center;
+    padding: 0.5rem 0.3rem;
+    font-size: 0.8rem;
+  }
+
+  .gallery-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .gallery-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.55rem 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  #gallery-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+  }
+
+  /* Modals on Mobile */
+  .modal-content-box {
+    width: 95vw;
+    max-width: 95vw;
+    max-height: 90vh;
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .lightbox-box {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .lightbox-media-area {
+    flex: 1;
+    min-height: 250px;
+    max-height: calc(100vh - 150px);
+  }
+
+  .lightbox-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
+
+  /* Toast notification on mobile */
+  .toast-container {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+    max-width: 100%;
+  }
+
+  .toast {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* Very Small Mobile Screens (<= 360px) */
+@media (max-width: 360px) {
+  .capture-main-deck {
+    gap: 20px !important;
+  }
+}
+
+/* Mobile Landscape Orientation (Phone held horizontally) */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+  .app-header {
+    padding: 0.35rem 1rem;
+  }
+
+  .main-content {
+    padding: 0.35rem 0.75rem 1rem;
+  }
+
+  .camera-viewport-wrap {
+    height: calc(100vh - 65px);
+    min-height: 260px;
+  }
+
+  .capture-main-deck {
+    padding: 0.35rem 0.85rem;
+    flex-direction: row;
+    display: flex;
+  }
+
+  .filter-strip-wrapper {
+    display: none; /* Hide bottom strip in landscape to maximize video viewport */
+  }
+
+  .studio-inspector {
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    width: 320px;
+    max-height: 100vh;
+    border-radius: 0;
+    transform: translateX(100%);
+  }
+
+  .studio-inspector.drawer-open {
+    transform: translateX(0);
+  }
+
+  .studio-inspector.drawer-closed {
+    transform: translateX(100%);
   }
 }
 

@@ -13,8 +13,9 @@ import {
 
 import { CameraController } from './modules/camera.js';
 import { VideoRecorder } from './modules/recorder.js';
-import { FilterManager, FILTER_PRESETS } from './modules/filters.js';
+import { FilterManager, FILTER_PRESETS, FILTER_CATEGORIES } from './modules/filters.js';
 import { PhotoCaptureEngine } from './modules/capture.js';
+import { SnapLensEngine } from './modules/snapLensEngine.js';
 import { GalleryManager } from './modules/gallery.js';
 import { ShortcutsManager } from './modules/shortcuts.js';
 import { showToast } from './modules/toast.js';
@@ -62,10 +63,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const modeBurstBtn = document.getElementById('mode-burst');
   let currentMode = 'photo'; // 'photo' | 'video' | 'burst'
 
-  // Capture / Record Controls
+  // Capture / Record Controls (Snapchat Shutter & Gesture Elements)
   const btnCaptureShutter = document.getElementById('btn-capture-shutter');
   const btnRecordTrigger = document.getElementById('btn-record-trigger');
   const btnRecordPause = document.getElementById('btn-record-pause');
+  const snapLockPill = document.getElementById('snap-lock-pill');
+  const lockUnlockedSvg = document.getElementById('lock-unlocked-svg');
+  const lockLockedSvg = document.getElementById('lock-locked-svg');
+  const lockLabel = document.getElementById('lock-label');
+  const lockChevron = document.getElementById('lock-chevron');
+  const shutterProgressRing = document.getElementById('shutter-progress-ring');
+  const progressRingFill = document.getElementById('progress-ring-fill');
 
   // Drawer Toggles & Panels
   const btnToggleDevices = document.getElementById('btn-toggle-devices');
@@ -79,6 +87,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const selectCamera = document.getElementById('select-camera');
   const btnFlipFacing = document.getElementById('btn-flip-facing');
+  const btnQuickFlipCam = document.getElementById('btn-quick-flip-cam');
+  const btnFlipFacingDeck = document.getElementById('btn-flip-facing-deck');
   const selectResolution = document.getElementById('select-resolution');
   const selectMic = document.getElementById('select-mic');
   const toggleAudioRecording = document.getElementById('toggle-audio-recording');
@@ -107,8 +117,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const selectTimer = document.getElementById('select-timer');
   const selectBurstCount = document.getElementById('select-burst-count');
 
-  // Filters Bar
-  const filterPresetsBar = document.getElementById('filter-presets-bar');
+  // Snapchat Lens Carousel & Effects
+  const lensCarouselTrack = document.getElementById('lens-carousel-track');
+  const snapchatLensRipple = document.getElementById('snapchat-lens-ripple');
+  const lensActiveIndicator = document.getElementById('lens-active-indicator');
+  const lensIndicatorIcon = document.getElementById('lens-indicator-icon');
+  const lensIndicatorName = document.getElementById('lens-indicator-name');
+  const btnExploreLenses = document.getElementById('btn-explore-lenses');
+
+  // Snapchat Lens Explorer Modal
+  const modalLensExplorer = document.getElementById('modal-lens-explorer');
+  const backdropLensExplorer = document.getElementById('backdrop-lens-explorer');
+  const btnCloseLensExplorer = document.getElementById('btn-close-lens-explorer');
+  const lensSearchInput = document.getElementById('lens-search-input');
+  const btnClearLensSearch = document.getElementById('btn-clear-lens-search');
+  const lensCategoriesBar = document.getElementById('lens-categories-bar');
+  const lensExplorerGrid = document.getElementById('lens-explorer-grid');
 
   // Gallery Elements
   const galleryContainer = document.getElementById('gallery-container');
@@ -158,8 +182,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   filterManager.setZoom(settings.zoom);
 
-  // Initialize Capture Engine
+  // Initialize Snapchat AR Lens Engine
+  const snapLensCanvas = document.getElementById('snapchat-lens-canvas');
+  const snapLensEngine = new SnapLensEngine(snapLensCanvas, videoEl);
+  const initialPreset = filterManager.getPreset(settings.activeFilter);
+  if (initialPreset && initialPreset.overlay) {
+    snapLensEngine.setOverlay(initialPreset.overlay);
+  }
+
+  // Initialize Capture Engine with AR Lens Canvas compositing
   const captureEngine = new PhotoCaptureEngine(videoEl, filterManager, {
+    lensCanvas: snapLensCanvas,
     onFlash: () => {
       shutterFlash.classList.remove('flashing');
       // Trigger reflow
@@ -183,35 +216,52 @@ document.addEventListener('DOMContentLoaded', async () => {
         hudPausedPill.classList.add('hidden');
         headerStatusDot.className = 'status-dot recording';
         headerStatusText.textContent = 'Recording Video';
-        btnRecordTrigger.classList.add('recording');
-        btnRecordPause.classList.remove('hidden', 'paused');
-        btnRecordPause.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-          </svg>
-        `;
+        btnCaptureShutter.classList.add('recording');
+        if (btnRecordTrigger) btnRecordTrigger.classList.add('recording');
+        if (btnRecordPause) {
+          btnRecordPause.classList.remove('hidden', 'paused');
+          btnRecordPause.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+            </svg>
+          `;
+        }
       } else if (state === 'paused') {
         hudPausedPill.classList.remove('hidden');
-        btnRecordPause.classList.add('paused');
-        btnRecordPause.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3"/>
-          </svg>
-        `;
+        if (btnRecordPause) {
+          btnRecordPause.classList.add('paused');
+          btnRecordPause.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          `;
+        }
       } else if (state === 'idle') {
         hudRecordingPill.classList.add('hidden');
         hudPausedPill.classList.add('hidden');
-        btnRecordTrigger.classList.remove('recording');
-        btnRecordPause.classList.add('hidden');
+        btnCaptureShutter.classList.remove('recording', 'locked-recording');
+        if (btnRecordTrigger) btnRecordTrigger.classList.remove('recording');
+        if (btnRecordPause) btnRecordPause.classList.add('hidden');
         headerStatusDot.className = cameraController.isStreaming ? 'status-dot active' : 'status-dot';
         headerStatusText.textContent = cameraController.isStreaming ? 'Live Camera Feed' : 'Camera Standby';
+        resetSnapchatShutterUI();
       }
     },
-    onTimerTick: ({ formatted, isPaused }) => {
+    onTimerTick: ({ seconds, formatted, isPaused }) => {
       hudRecordTimer.textContent = formatted;
+      if (progressRingFill) {
+        const sec = typeof seconds === 'number' ? seconds : 0;
+        const fraction = Math.min(1, sec / 60);
+        const offset = 257.6 * (1 - fraction);
+        progressRingFill.style.strokeDashoffset = offset.toFixed(1);
+      }
+      if (typeof seconds === 'number' && seconds >= 60) {
+        stopVideoRecordingAndSave();
+      }
     },
     onError: (err) => {
       showToast('Recording error: ' + err.message, 'error');
+      resetSnapchatShutterUI();
     }
   });
 
@@ -339,6 +389,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const galleryManager = new GalleryManager(galleryContainer, modalLightbox, {
     onItemsChanged: (items) => {
       headerGalleryCount.textContent = items.length;
+      const deckCount = document.getElementById('deck-gallery-count');
+      if (deckCount) deckCount.textContent = items.length;
       updateStorageInfo();
       updateRecentCapturesReel(items);
     }
@@ -348,6 +400,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const existingMedia = await getAllMediaItems();
     galleryManager.setItems(existingMedia);
+    const deckCount = document.getElementById('deck-gallery-count');
+    if (deckCount) deckCount.textContent = existingMedia.length;
     updateRecentCapturesReel(existingMedia);
   } catch (err) {
     console.warn('Error loading media items from storage:', err);
@@ -409,8 +463,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Apply Initial UI Settings state
   applyStoredSettingsToUI();
-  renderFilterPresets();
+  renderSnapchatLensCarousel();
+  activateLens(settings.activeFilter || 'none', false);
   updateGridOverlay(settings.gridType);
+  initPwaServiceWorker();
 
   /* Helper Functions */
 
@@ -511,20 +567,276 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  function renderFilterPresets() {
-    filterPresetsBar.innerHTML = '';
-    FILTER_PRESETS.forEach((preset) => {
-      const chip = document.createElement('button');
-      chip.className = `filter-chip ${settings.activeFilter === preset.id ? 'active' : ''}`;
-      chip.textContent = preset.name;
-      chip.addEventListener('click', () => {
-        filterPresetsBar.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
-        chip.classList.add('active');
-        settings.activeFilter = preset.id;
-        filterManager.setPreset(preset.id);
-        saveSettings(settings);
+  /* ==========================================================================
+     SNAPCHAT LENS CAROUSEL & TRANSITION ENGINE
+     ========================================================================== */
+
+  let lensIndicatorTimer = null;
+
+  function activateLens(presetId, animate = true) {
+    const preset = filterManager.getPreset(presetId);
+    settings.activeFilter = preset.id;
+    filterManager.setPreset(preset.id);
+    saveSettings(settings);
+
+    // Update real-time AR overlay in SnapLensEngine
+    if (snapLensEngine) {
+      snapLensEngine.setOverlay(preset.overlay || null);
+    }
+
+    // Update active state in carousel track
+    if (lensCarouselTrack) {
+      lensCarouselTrack.querySelectorAll('.snapchat-lens-btn').forEach((btn) => {
+        const isActive = btn.dataset.lensId === preset.id;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        if (isActive && animate) {
+          btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
       });
-      filterPresetsBar.appendChild(chip);
+    }
+
+    // Update active state in explorer grid if open
+    if (lensExplorerGrid) {
+      lensExplorerGrid.querySelectorAll('.lens-row-card').forEach((card) => {
+        const isActive = card.dataset.lensId === preset.id;
+        card.classList.toggle('active', isActive);
+        const btn = card.querySelector('.lens-row-try-btn');
+        if (btn) btn.textContent = isActive ? 'Active' : 'Try Lens';
+      });
+    }
+
+    // Update shutter inner accent gradient
+    const shutterInner = document.getElementById('shutter-inner');
+    if (shutterInner) {
+      if (preset.id === 'none') {
+        shutterInner.style.background = '#f8fafc';
+        shutterInner.style.boxShadow = 'none';
+      } else {
+        shutterInner.style.background = preset.gradient || 'var(--color-primary)';
+        shutterInner.style.boxShadow = '0 0 16px rgba(255, 255, 255, 0.45)';
+      }
+    }
+
+    // Snapchat Lens Switch Viewfinder Animation
+    if (animate) {
+      if (snapchatLensRipple) {
+        snapchatLensRipple.classList.remove('rippling');
+        void snapchatLensRipple.offsetWidth; // Force reflow
+        snapchatLensRipple.classList.add('rippling');
+      }
+
+      if (lensActiveIndicator && lensIndicatorIcon && lensIndicatorName) {
+        lensIndicatorIcon.textContent = preset.icon || '✨';
+        lensIndicatorName.textContent = preset.name;
+        lensActiveIndicator.classList.remove('hidden', 'fade-out');
+        lensActiveIndicator.classList.add('pop-in');
+
+        if (lensIndicatorTimer) clearTimeout(lensIndicatorTimer);
+        lensIndicatorTimer = setTimeout(() => {
+          lensActiveIndicator.classList.add('fade-out');
+          setTimeout(() => {
+            lensActiveIndicator.classList.add('hidden');
+            lensActiveIndicator.classList.remove('pop-in', 'fade-out');
+          }, 350);
+        }, 1600);
+      }
+    }
+  }
+
+  function renderSnapchatLensCarousel() {
+    if (!lensCarouselTrack) return;
+    lensCarouselTrack.innerHTML = '';
+
+    FILTER_PRESETS.forEach((preset) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `snapchat-lens-btn ${settings.activeFilter === preset.id ? 'active' : ''}`;
+      btn.dataset.lensId = preset.id;
+      btn.title = `${preset.name} — ${preset.tagline}`;
+      btn.setAttribute('aria-label', `Apply ${preset.name} lens`);
+
+      btn.innerHTML = `
+        <div class="snapchat-lens-badge" style="background: ${preset.gradient}">
+          <span class="lens-badge-icon">${preset.icon}</span>
+        </div>
+        <span class="lens-badge-label">${preset.name}</span>
+      `;
+
+      btn.addEventListener('click', () => {
+        activateLens(preset.id, true);
+      });
+
+      lensCarouselTrack.appendChild(btn);
+    });
+
+    // Center active lens on initial render
+    setTimeout(() => {
+      const activeBtn = lensCarouselTrack.querySelector('.snapchat-lens-btn.active');
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
+      }
+    }, 120);
+  }
+
+  /* ==========================================================================
+     SNAPCHAT LENS EXPLORER (SEARCH & ROW-WISE CATALOG)
+     ========================================================================== */
+
+  let currentExplorerCategory = 'all';
+  let currentExplorerQuery = '';
+
+  function renderLensExplorerCategories() {
+    if (!lensCategoriesBar) return;
+    lensCategoriesBar.innerHTML = '';
+
+    FILTER_CATEGORIES.forEach((cat) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = `lens-cat-chip ${currentExplorerCategory === cat.id ? 'active' : ''}`;
+      chip.innerHTML = `<span>${cat.icon}</span> <span>${cat.name}</span>`;
+      chip.addEventListener('click', () => {
+        currentExplorerCategory = cat.id;
+        lensCategoriesBar.querySelectorAll('.lens-cat-chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderLensExplorerGrid();
+      });
+      lensCategoriesBar.appendChild(chip);
+    });
+  }
+
+  function renderLensExplorerGrid() {
+    if (!lensExplorerGrid) return;
+    lensExplorerGrid.innerHTML = '';
+
+    const query = (currentExplorerQuery || '').toLowerCase().trim();
+    const filtered = FILTER_PRESETS.filter((preset) => {
+      const matchesCategory = currentExplorerCategory === 'all' || preset.category === currentExplorerCategory;
+      const matchesSearch = !query ||
+        preset.name.toLowerCase().includes(query) ||
+        preset.tagline.toLowerCase().includes(query) ||
+        preset.category.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+      lensExplorerGrid.innerHTML = `
+        <div class="lens-empty-state">
+          <div class="empty-lens-icon">🔍</div>
+          <h4>No lenses found</h4>
+          <p>We couldn't find any lens matching "<strong>${currentExplorerQuery}</strong>".</p>
+          <button class="btn btn-secondary btn-sm" id="btn-reset-lens-search">Show All Lenses</button>
+        </div>
+      `;
+      const btnReset = document.getElementById('btn-reset-lens-search');
+      if (btnReset) {
+        btnReset.addEventListener('click', () => {
+          currentExplorerQuery = '';
+          currentExplorerCategory = 'all';
+          if (lensSearchInput) lensSearchInput.value = '';
+          if (btnClearLensSearch) btnClearLensSearch.classList.add('hidden');
+          renderLensExplorerCategories();
+          renderLensExplorerGrid();
+        });
+      }
+      return;
+    }
+
+    filtered.forEach((preset) => {
+      const card = document.createElement('div');
+      card.className = `lens-row-card ${settings.activeFilter === preset.id ? 'active' : ''}`;
+      card.dataset.lensId = preset.id;
+      card.innerHTML = `
+        <div class="lens-row-icon" style="background: ${preset.gradient}">
+          <span>${preset.icon}</span>
+        </div>
+        <div class="lens-row-info">
+          <div class="lens-row-title-row">
+            <span class="lens-row-title">${preset.name}</span>
+            <span class="lens-row-category">${preset.category.toUpperCase()}</span>
+          </div>
+          <span class="lens-row-tagline">${preset.tagline}</span>
+        </div>
+        <button class="lens-row-try-btn" title="Try ${preset.name} lens">
+          ${settings.activeFilter === preset.id ? 'Active' : 'Try Lens'}
+        </button>
+      `;
+
+      card.addEventListener('click', () => {
+        activateLens(preset.id, true);
+        closeLensExplorer();
+        showToast(`Applied ${preset.name} lens!`, 'success', 1500);
+      });
+
+      lensExplorerGrid.appendChild(card);
+    });
+  }
+
+  function openLensExplorer() {
+    if (modalLensExplorer) {
+      modalLensExplorer.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+      renderLensExplorerCategories();
+      renderLensExplorerGrid();
+      if (lensSearchInput) {
+        setTimeout(() => lensSearchInput.focus(), 120);
+      }
+    }
+  }
+
+  function closeLensExplorer() {
+    if (modalLensExplorer) {
+      modalLensExplorer.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+    }
+  }
+
+  if (btnExploreLenses) btnExploreLenses.addEventListener('click', openLensExplorer);
+  if (btnCloseLensExplorer) btnCloseLensExplorer.addEventListener('click', closeLensExplorer);
+  if (backdropLensExplorer) backdropLensExplorer.addEventListener('click', closeLensExplorer);
+
+  if (lensSearchInput) {
+    lensSearchInput.addEventListener('input', (e) => {
+      currentExplorerQuery = e.target.value;
+      if (btnClearLensSearch) {
+        btnClearLensSearch.classList.toggle('hidden', !currentExplorerQuery);
+      }
+      renderLensExplorerGrid();
+    });
+  }
+
+  if (btnClearLensSearch) {
+    btnClearLensSearch.addEventListener('click', () => {
+      currentExplorerQuery = '';
+      if (lensSearchInput) {
+        lensSearchInput.value = '';
+        lensSearchInput.focus();
+      }
+      btnClearLensSearch.classList.add('hidden');
+      renderLensExplorerGrid();
+    });
+  }
+
+  /* ==========================================================================
+     PWA SERVICE WORKER REGISTRATION
+     ========================================================================== */
+  function initPwaServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then((reg) => {
+          console.log('ProCam ServiceWorker active:', reg.scope);
+        }).catch((err) => {
+          console.warn('PWA registration:', err);
+        });
+      });
+    }
+
+    // Install prompt listener
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent browser default mini-infobar
+      e.preventDefault();
+      window.deferredPrompt = e;
+      console.log('PWA ready for install prompt');
     });
   }
 
@@ -691,22 +1003,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (mode === 'photo') {
       modePhotoBtn.classList.add('active');
-      btnCaptureShutter.classList.remove('hidden');
-      btnRecordTrigger.classList.add('hidden');
-      btnRecordPause.classList.add('hidden');
-      if (stageBadgeBurst) stageBadgeBurst.classList.remove('hidden');
+      if (stageBadgeBurst) stageBadgeBurst.classList.add('hidden');
     } else if (mode === 'video') {
       modeVideoBtn.classList.add('active');
-      btnCaptureShutter.classList.add('hidden');
-      btnRecordTrigger.classList.remove('hidden');
-      btnRecordPause.classList.add('hidden');
       if (stageBadgeBurst) stageBadgeBurst.classList.add('hidden');
     } else if (mode === 'burst') {
       modeBurstBtn.classList.add('active');
-      btnCaptureShutter.classList.remove('hidden');
-      btnRecordTrigger.classList.add('hidden');
-      btnRecordPause.classList.add('hidden');
       if (stageBadgeBurst) stageBadgeBurst.classList.remove('hidden');
+    }
+
+    if (btnCaptureShutter) {
+      btnCaptureShutter.classList.remove('hidden');
+    }
+    if (btnRecordTrigger) {
+      btnRecordTrigger.classList.add('hidden');
+    }
+    if (btnRecordPause) {
+      btnRecordPause.classList.add('hidden');
     }
   }
 
@@ -736,7 +1049,53 @@ document.addEventListener('DOMContentLoaded', async () => {
   btnStartCamera.addEventListener('click', handleStartCamera);
   btnQuickStop.addEventListener('click', handleStopCamera);
 
-  /* Photo Capture Handler */
+  /* ==========================================================================
+     SNAPCHAT CAMERA SHUTTER: TAP PHOTO, HOLD VIDEO, SLIDE-TO-LOCK
+     ========================================================================== */
+
+  let holdTimer = null;
+  let isHolding = false;
+  let isRecordingActive = false;
+  let isLockedHandsFree = false;
+  let pointerStartY = 0;
+  let activePointerId = null;
+  const HOLD_THRESHOLD_MS = 280; // ms threshold to distinguish tap from hold
+  const SLIDE_LOCK_DISTANCE_PX = 35; // px upward drag to trigger lock
+  const MAX_RECORDING_SECONDS = 60; // 60 seconds snap limit
+  const RING_CIRCUMFERENCE = 257.6; // 2 * PI * 41
+
+  function resetSnapchatShutterUI() {
+    isHolding = false;
+    isRecordingActive = false;
+    isLockedHandsFree = false;
+    activePointerId = null;
+
+    if (holdTimer) {
+      clearTimeout(holdTimer);
+      holdTimer = null;
+    }
+
+    if (btnCaptureShutter) {
+      btnCaptureShutter.classList.remove('recording', 'locked-recording');
+    }
+    if (snapLockPill) {
+      snapLockPill.classList.add('hidden');
+      snapLockPill.classList.remove('locked');
+      if (lockLabel) lockLabel.textContent = 'Slide to Lock';
+      if (lockUnlockedSvg) lockUnlockedSvg.classList.remove('hidden');
+      if (lockLockedSvg) lockLockedSvg.classList.add('hidden');
+      if (lockChevron) lockChevron.classList.remove('hidden');
+    }
+
+    if (shutterProgressRing) {
+      shutterProgressRing.classList.remove('active');
+    }
+    if (progressRingFill) {
+      progressRingFill.style.strokeDashoffset = RING_CIRCUMFERENCE.toString();
+    }
+  }
+
+  /* Photo Capture Handler (Triggered on Tap) */
   async function handlePhotoCapture() {
     if (!cameraController.isStreaming) {
       showToast('Please start the camera first.', 'warning');
@@ -746,7 +1105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       btnCaptureShutter.disabled = true;
 
-      // Check countdown
+      // Check countdown timer
       const delay = parseInt(settings.timerDelay, 10);
       if (delay > 0) {
         await captureEngine.runCountdown(delay, settings.shutterSound, settings.shutterVolume);
@@ -787,40 +1146,178 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  btnCaptureShutter.addEventListener('click', handlePhotoCapture);
+  let compositeCanvas = null;
+  let compositeCtx = null;
+  let compositeAnimId = null;
 
-  /* Video Recording Handler */
-  async function handleVideoToggle() {
-    if (!cameraController.isStreaming) {
+  function getRecordingStream() {
+    const currentPreset = filterManager.getPreset(settings.activeFilter);
+    if (!currentPreset.overlay || !snapLensCanvas || !cameraController.stream) {
+      return cameraController.stream;
+    }
+
+    if (!compositeCanvas) {
+      compositeCanvas = document.createElement('canvas');
+      compositeCtx = compositeCanvas.getContext('2d');
+    }
+
+    const vw = videoEl.videoWidth || 1280;
+    const vh = videoEl.videoHeight || 720;
+    compositeCanvas.width = vw;
+    compositeCanvas.height = vh;
+
+    function drawComposite() {
+      if (videoRecorder.state === 'idle') {
+        if (compositeAnimId) {
+          cancelAnimationFrame(compositeAnimId);
+          compositeAnimId = null;
+        }
+        return;
+      }
+
+      compositeCtx.save();
+      const filterStr = filterManager.getFilterString();
+      compositeCtx.filter = filterStr === 'none' ? 'none' : filterStr;
+      const zoom = filterManager.zoom;
+      const mirror = filterManager.mirror;
+      const flipV = filterManager.flipV;
+
+      compositeCtx.translate(vw / 2, vh / 2);
+      compositeCtx.scale(mirror ? -zoom : zoom, flipV ? -zoom : zoom);
+      compositeCtx.translate(-vw / 2, -vh / 2);
+      compositeCtx.drawImage(videoEl, 0, 0, vw, vh);
+      compositeCtx.restore();
+
+      compositeCtx.filter = 'none';
+      if (snapLensCanvas && snapLensCanvas.width > 0) {
+        compositeCtx.drawImage(snapLensCanvas, 0, 0, vw, vh);
+      }
+
+      compositeAnimId = requestAnimationFrame(drawComposite);
+    }
+
+    drawComposite();
+
+    try {
+      const compStream = compositeCanvas.captureStream(30);
+      const audioTracks = cameraController.stream.getAudioTracks();
+      audioTracks.forEach((t) => compStream.addTrack(t));
+      return compStream;
+    } catch (e) {
+      console.warn('captureStream error, falling back to camera stream:', e);
+      return cameraController.stream;
+    }
+  }
+
+  /* Start Video Recording Session (Triggered on Long-Press / Hold) */
+  async function startVideoRecordingSession() {
+    if (!cameraController.isStreaming || !cameraController.stream) {
       showToast('Please start the camera before recording.', 'warning');
+      resetSnapchatShutterUI();
       return;
     }
 
+    if (videoRecorder.state !== 'idle') return;
+
+    try {
+      playRecordStartSound(settings.shutterSound, settings.shutterVolume);
+      const streamToRecord = getRecordingStream();
+      videoRecorder.startRecording(streamToRecord, {
+        videoBitsPerSecond: 3500000
+      });
+      isRecordingActive = true;
+      isLockedHandsFree = false;
+
+      // Update UI for recording
+      btnCaptureShutter.classList.add('recording');
+      btnCaptureShutter.classList.remove('locked-recording');
+
+      if (snapLockPill) {
+        snapLockPill.classList.remove('hidden', 'locked');
+        if (lockLabel) lockLabel.textContent = 'Slide to Lock';
+        if (lockUnlockedSvg) lockUnlockedSvg.classList.remove('hidden');
+        if (lockLockedSvg) lockLockedSvg.classList.add('hidden');
+        if (lockChevron) lockChevron.classList.remove('hidden');
+      }
+
+      if (shutterProgressRing) {
+        shutterProgressRing.classList.add('active');
+      }
+      if (progressRingFill) {
+        progressRingFill.style.strokeDashoffset = RING_CIRCUMFERENCE.toString();
+      }
+
+      // Haptic feedback
+      if (navigator.vibrate) {
+        navigator.vibrate(40);
+      }
+      showToast('Holding to record... Slide up to lock!', 'info', 1800);
+    } catch (err) {
+      console.error('Failed to start recording:', err);
+      showToast('Could not start recording: ' + err.message, 'error');
+      resetSnapchatShutterUI();
+    }
+  }
+
+  /* Stop Video Recording & Save to Memories */
+  async function stopVideoRecordingAndSave() {
+    if (compositeAnimId) {
+      cancelAnimationFrame(compositeAnimId);
+      compositeAnimId = null;
+    }
+
     if (videoRecorder.state === 'idle') {
-      // Start recording
-      try {
-        playRecordStartSound(settings.shutterSound, settings.shutterVolume);
-        videoRecorder.startRecording(cameraController.stream, {
-          videoBitsPerSecond: 3500000
-        });
-        showToast('Recording started...', 'info', 1800);
-      } catch (err) {
-        showToast('Could not start recording: ' + err.message, 'error');
+      resetSnapchatShutterUI();
+      return;
+    }
+
+    try {
+      playRecordStopSound(settings.shutterSound, settings.shutterVolume);
+      const item = await videoRecorder.stopRecording();
+      if (item) {
+        await saveMediaItem(item);
+        galleryManager.addItem(item);
+        showToast(`Video saved (${item.formattedDuration})!`, 'success');
       }
+    } catch (err) {
+      console.error('Stop recording error:', err);
+      showToast('Error saving video: ' + err.message, 'error');
+    } finally {
+      resetSnapchatShutterUI();
+    }
+  }
+
+  /* Activate Hands-Free Lock (Triggered on Slide Up) */
+  function activateHandsFreeLock() {
+    if (!isRecordingActive || isLockedHandsFree) return;
+    isLockedHandsFree = true;
+
+    // Visual updates
+    if (snapLockPill) {
+      snapLockPill.classList.add('locked');
+      if (lockLabel) lockLabel.textContent = 'Locked (Hands-free)';
+      if (lockUnlockedSvg) lockUnlockedSvg.classList.add('hidden');
+      if (lockLockedSvg) lockLockedSvg.classList.remove('hidden');
+      if (lockChevron) lockChevron.classList.add('hidden');
+    }
+
+    btnCaptureShutter.classList.remove('recording');
+    btnCaptureShutter.classList.add('locked-recording');
+
+    // Haptic confirmation
+    if (navigator.vibrate) {
+      navigator.vibrate([40, 60, 40]);
+    }
+    showToast('🔒 Video locked hands-free! Tap to stop.', 'success', 2200);
+  }
+
+  /* Video Toggle Helper for Keyboard Shortcuts & Video Mode */
+  async function handleVideoToggle() {
+    if (videoRecorder.state === 'idle') {
+      await startVideoRecordingSession();
+      activateHandsFreeLock();
     } else {
-      // Stop recording
-      try {
-        playRecordStopSound(settings.shutterSound, settings.shutterVolume);
-        const item = await videoRecorder.stopRecording();
-        if (item) {
-          await saveMediaItem(item);
-          galleryManager.addItem(item);
-          showToast(`Recording saved (${item.formattedDuration})!`, 'success');
-        }
-      } catch (err) {
-        console.error('Stop recording error:', err);
-        showToast('Error saving recording: ' + err.message, 'error');
-      }
+      await stopVideoRecordingAndSave();
     }
   }
 
@@ -834,8 +1331,96 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  btnRecordTrigger.addEventListener('click', handleVideoToggle);
-  btnRecordPause.addEventListener('click', handleVideoPauseResume);
+  /* Shutter Gesture State Machine (Pointer Events) */
+  btnCaptureShutter.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+
+    // If already in locked hands-free recording, tapping stops the recording
+    if (isLockedHandsFree || (videoRecorder.state === 'recording' && !isHolding)) {
+      stopVideoRecordingAndSave();
+      return;
+    }
+
+    if (!cameraController.isStreaming) {
+      handlePhotoCapture();
+      return;
+    }
+
+    isHolding = false;
+    pointerStartY = e.clientY;
+    activePointerId = e.pointerId;
+
+    try {
+      btnCaptureShutter.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
+    if (holdTimer) clearTimeout(holdTimer);
+
+    holdTimer = setTimeout(() => {
+      isHolding = true;
+      startVideoRecordingSession();
+    }, HOLD_THRESHOLD_MS);
+  });
+
+  btnCaptureShutter.addEventListener('pointermove', (e) => {
+    if (!isHolding || !isRecordingActive || isLockedHandsFree) return;
+
+    const deltaY = e.clientY - pointerStartY;
+    if (deltaY <= -SLIDE_LOCK_DISTANCE_PX) {
+      activateHandsFreeLock();
+    }
+  });
+
+  function handlePointerRelease(e) {
+    if (activePointerId !== null && e.pointerId === activePointerId) {
+      try {
+        btnCaptureShutter.releasePointerCapture(e.pointerId);
+      } catch (err) {}
+      activePointerId = null;
+    }
+
+    if (holdTimer) {
+      clearTimeout(holdTimer);
+      holdTimer = null;
+    }
+
+    if (!isHolding) {
+      // Short tap (< 280ms)
+      if (currentMode === 'video') {
+        if (videoRecorder.state === 'recording') {
+          stopVideoRecordingAndSave();
+        } else {
+          startVideoRecordingSession();
+          activateHandsFreeLock();
+        }
+      } else {
+        handlePhotoCapture();
+      }
+    } else {
+      // Was holding
+      if (isRecordingActive) {
+        if (!isLockedHandsFree) {
+          stopVideoRecordingAndSave();
+        }
+      }
+    }
+    isHolding = false;
+  }
+
+  btnCaptureShutter.addEventListener('pointerup', handlePointerRelease);
+  btnCaptureShutter.addEventListener('pointercancel', handlePointerRelease);
+
+  if (snapLockPill) {
+    snapLockPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isRecordingActive || videoRecorder.state === 'recording') {
+        stopVideoRecordingAndSave();
+      }
+    });
+  }
+
+  if (btnRecordTrigger) btnRecordTrigger.addEventListener('click', handleVideoToggle);
+  if (btnRecordPause) btnRecordPause.addEventListener('click', handleVideoPauseResume);
 
   /* Inspector Studio Tab Switches */
   function switchInspectorTab(tab) {
@@ -879,10 +1464,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  btnFlipFacing.addEventListener('click', async () => {
-    const facing = await cameraController.flipFacingMode();
-    showToast(`Flipped to ${facing === 'user' ? 'Front' : 'Rear'} camera`, 'info', 1800);
-  });
+  async function handleFlipFacing() {
+    const allFlipButtons = [btnFlipFacing, btnQuickFlipCam, btnFlipFacingDeck].filter(Boolean);
+    allFlipButtons.forEach((b) => b.classList.add('flipping'));
+    try {
+      const facing = await cameraController.flipFacingMode();
+      showToast(`Flipped to ${facing === 'user' ? 'Front' : 'Rear'} camera`, 'info', 1800);
+    } catch (err) {
+      console.warn('Flip camera error:', err);
+      showToast('Could not switch camera: ' + err.message, 'warning');
+    } finally {
+      setTimeout(() => {
+        allFlipButtons.forEach((b) => b.classList.remove('flipping'));
+      }, 400);
+    }
+  }
+
+  if (btnFlipFacing) btnFlipFacing.addEventListener('click', handleFlipFacing);
+  if (btnQuickFlipCam) btnQuickFlipCam.addEventListener('click', handleFlipFacing);
+  if (btnFlipFacingDeck) btnFlipFacingDeck.addEventListener('click', handleFlipFacing);
 
   selectResolution.addEventListener('change', async (e) => {
     settings.preferredResolution = e.target.value;
@@ -1020,19 +1620,86 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (btnCloseInspector) btnCloseInspector.addEventListener('click', closeToolsDrawer);
   if (inspectorBackdrop) inspectorBackdrop.addEventListener('click', closeToolsDrawer);
 
-  /* Quick Deck Buttons: Timer, Burst, and Recent Thumbnail */
+  const drawerDragHandle = document.querySelector('.drawer-drag-handle');
+  if (drawerDragHandle) {
+    drawerDragHandle.addEventListener('click', closeToolsDrawer);
+    let touchStartY = 0;
+    drawerDragHandle.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    drawerDragHandle.addEventListener('touchmove', (e) => {
+      const touchCurrentY = e.touches[0].clientY;
+      if (touchCurrentY - touchStartY > 45) {
+        closeToolsDrawer();
+      }
+    }, { passive: true });
+  }
+
+  /* Snapchat Mobile & Quick Deck Buttons: Timer, Burst, Tools, and Memories */
   const stageBadgeTimer = document.getElementById('stage-badge-timer');
+  const btnQuickTimerHud = document.getElementById('btn-quick-timer-hud');
+  const hudTimerBadge = document.getElementById('hud-timer-badge');
+  const btnQuickToolsHud = document.getElementById('btn-quick-tools-hud');
+  const btnCloseGallerySheet = document.getElementById('btn-close-gallery-sheet');
+  const gallerySheetHandle = document.getElementById('gallery-sheet-handle');
+  const btnJumpGallery = document.getElementById('btn-jump-gallery');
+
+  function cycleTimerDelay() {
+    const delays = [0, 3, 5, 10];
+    const cur = parseInt(settings.timerDelay, 10) || 0;
+    const idx = delays.indexOf(cur);
+    const nextDelay = delays[(idx + 1) % delays.length];
+    settings.timerDelay = nextDelay;
+    selectTimer.value = String(nextDelay);
+    const label = nextDelay === 0 ? 'Off' : `${nextDelay}s`;
+    labelTimerVal.textContent = label;
+    if (hudTimerBadge) {
+      hudTimerBadge.textContent = label;
+      hudTimerBadge.classList.toggle('active', nextDelay > 0);
+    }
+    saveSettings(settings);
+    showToast(nextDelay === 0 ? 'Timer: Off' : `Timer: ${nextDelay}s`, 'info', 1300);
+  }
+
   if (stageBadgeTimer) {
-    stageBadgeTimer.addEventListener('click', () => {
-      const delays = [0, 3, 5, 10];
-      const cur = parseInt(settings.timerDelay, 10) || 0;
-      const idx = delays.indexOf(cur);
-      const nextDelay = delays[(idx + 1) % delays.length];
-      settings.timerDelay = nextDelay;
-      selectTimer.value = String(nextDelay);
-      labelTimerVal.textContent = nextDelay === 0 ? 'Off' : `${nextDelay}s`;
-      saveSettings(settings);
-      showToast(nextDelay === 0 ? 'Timer: Off' : `Timer: ${nextDelay}s`, 'info', 1300);
+    stageBadgeTimer.addEventListener('click', cycleTimerDelay);
+  }
+  if (btnQuickTimerHud) {
+    btnQuickTimerHud.addEventListener('click', cycleTimerDelay);
+  }
+  if (btnQuickToolsHud) {
+    btnQuickToolsHud.addEventListener('click', () => openToolsDrawer());
+  }
+
+  function openMemoriesSheet() {
+    const gallerySec = document.getElementById('gallery');
+    if (gallerySec) {
+      if (window.innerWidth <= 768) {
+        gallerySec.classList.add('gallery-sheet-open');
+        document.body.classList.add('modal-open');
+      } else {
+        gallerySec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
+
+  function closeMemoriesSheet() {
+    const gallerySec = document.getElementById('gallery');
+    if (gallerySec) {
+      gallerySec.classList.remove('gallery-sheet-open');
+      document.body.classList.remove('modal-open');
+    }
+  }
+
+  if (btnCloseGallerySheet) btnCloseGallerySheet.addEventListener('click', closeMemoriesSheet);
+  if (gallerySheetHandle) gallerySheetHandle.addEventListener('click', closeMemoriesSheet);
+
+  if (btnJumpGallery) {
+    btnJumpGallery.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        openMemoriesSheet();
+      }
     });
   }
 
@@ -1055,12 +1722,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnStageRecentThumb = document.getElementById('btn-stage-recent-thumb');
   if (btnStageRecentThumb) {
     btnStageRecentThumb.addEventListener('click', () => {
-      if (galleryManager.items && galleryManager.items.length > 0) {
-        galleryManager.openLightbox(0);
-      } else {
-        const gallerySec = document.getElementById('gallery');
-        if (gallerySec) gallerySec.scrollIntoView({ behavior: 'smooth' });
-      }
+      openMemoriesSheet();
     });
   }
 
@@ -1198,11 +1860,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const ids = FILTER_PRESETS.map((p) => p.id);
       const currIdx = ids.indexOf(settings.activeFilter);
       const nextId = ids[(currIdx + 1) % ids.length];
-      settings.activeFilter = nextId;
-      filterManager.setPreset(nextId);
-      renderFilterPresets();
-      saveSettings(settings);
-      showToast(`Filter: ${nextId}`, 'info', 1500);
+      activateLens(nextId, true);
     },
     onToggleHelp: () => {
       if (modalShortcuts.classList.contains('hidden')) {

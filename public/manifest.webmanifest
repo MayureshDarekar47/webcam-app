@@ -1,0 +1,26 @@
+{
+  "name": "Snapchat — Camera & Lenses",
+  "short_name": "Snapchat",
+  "description": "Snapchat-style camera with real-time AR lenses, filters, burst shots, video recording and local storage.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#FFFC00",
+  "categories": ["photo", "video", "social", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Professional high-definition webcam web app. Take photos, record videos, apply real-time filters, and manage media locally with zero server uploads." />
-  <meta name="theme-color" content="#0a0d14" />
-  <title>Pro Webcam Studio — High-Definition Camera & Recording</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="Professional high-definition camera with real-time Snapchat lenses, video recording, burst shots, and local offline storage." />
+  <meta name="theme-color" content="#FFFC00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Snapchat" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/icon-192.png" />
+  <title>Snapchat Camera — Lenses & Filters</title>
 
   <!-- Google Fonts: Outfit & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,45 +23,45 @@
 <body>
 
   <!-- App Header -->
-  <header class="app-header">
+  <header class="app-header snap-header">
     <div class="header-container">
       <div class="brand-section">
-        <div class="logo-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-            <circle cx="12" cy="13" r="4"/>
+        <div class="logo-icon snap-ghost-logo">
+          <!-- Snapchat Ghost Logo SVG (Official style) -->
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 4C15.16 4 8 11.16 8 20c0 5.5 2.72 10.38 6.9 13.38L14 36l-3.5 1.5S9 38.25 9 40s1.5 2.5 1.5 2.5h27S39 41.75 39 40s-1.5-2.5-1.5-2.5L34 36l-.9-2.62C37.28 30.38 40 25.5 40 20c0-8.84-7.16-16-16-16zm-4 18a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm8 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
           </svg>
         </div>
         <div class="brand-info">
-          <h1>Pro Webcam Studio <span class="brand-badge">PRO HD</span></h1>
+          <h1 class="snap-brand-title">Snapchat <span class="brand-badge snap-badge mobile-hide">LENSES</span></h1>
         </div>
       </div>
 
       <div class="header-status-pill" id="header-status-pill">
         <span class="status-dot" id="header-status-dot"></span>
-        <span id="header-status-text">Camera Standby</span>
+        <span class="status-text mobile-hide" id="header-status-text">Camera Standby</span>
       </div>
 
       <div class="header-actions">
-        <button class="btn btn-secondary" id="btn-open-tools" title="Camera Tools & Adjustments">
+        <button class="btn btn-secondary btn-header-item" id="btn-open-tools" title="Camera Tools & Adjustments">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"/>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
-          <span>Tools</span>
+          <span class="btn-text mobile-hide-text">Tools</span>
         </button>
 
-        <a href="#gallery" class="btn btn-secondary" id="btn-jump-gallery">
+        <a href="#gallery" class="btn btn-secondary btn-header-item" id="btn-jump-gallery">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
             <circle cx="8.5" cy="8.5" r="1.5"/>
             <polyline points="21 15 16 10 5 21"/>
           </svg>
-          Gallery
+          <span class="btn-text mobile-hide-text">Gallery</span>
           <span class="tab-count" id="header-gallery-count">0</span>
         </a>
 
-        <button class="btn-icon" id="btn-open-shortcuts" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+        <button class="btn-icon mobile-hide" id="btn-open-shortcuts" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="2" y="4" width="20" height="16" rx="2"/>
             <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h8M6 16h.01M18 16h.01"/>
@@ -85,6 +91,9 @@
           <!-- Live Video Element -->
           <video id="webcam-video" autoplay playsinline muted></video>
 
+          <!-- Snapchat Augmented Reality & Lens Effect Canvas Overlay -->
+          <canvas id="snapchat-lens-canvas" class="snapchat-lens-canvas"></canvas>
+
           <!-- Composition Grid Overlay -->
           <div class="grid-overlay" id="grid-overlay"></div>
 
@@ -96,18 +105,27 @@
             <span class="countdown-number" id="countdown-number">3</span>
           </div>
 
+          <!-- Snapchat Lens Transition Optical Ripple Overlay -->
+          <div class="snapchat-lens-ripple" id="snapchat-lens-ripple"></div>
+
+          <!-- Snapchat Active Lens Pill Badge (Pops up at top of viewfinder on switch) -->
+          <div class="lens-active-indicator hidden" id="lens-active-indicator">
+            <span class="lens-indicator-icon" id="lens-indicator-icon">✨</span>
+            <span class="lens-indicator-name" id="lens-indicator-name">Golden Hour</span>
+          </div>
+
           <!-- Companion Video for Simultaneous Picture-in-Picture (Enables Live Video on BOTH Main Screen & Floating Window) -->
           <video id="pip-companion-video" autoplay playsinline muted aria-hidden="true" style="position: fixed; width: 320px; height: 180px; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;"></video>
 
           <!-- Inactive Placeholder State -->
           <div class="camera-placeholder" id="camera-placeholder">
             <div class="placeholder-icon">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
+              <!-- Snapchat Ghost Logo -->
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="#FFFC00" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17l-2 1s-1 .5-1 1.5S6 21 6 21h12s1-.5 1-1.5S18 19 18 19l-2-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.87-3.13-7-7-7z"/>
               </svg>
             </div>
-            <h2>Ready to Launch Studio Camera</h2>
+            <h2>Open Snapchat Camera</h2>
 
             <!-- Error Alert Box -->
             <div class="camera-error-box hidden" id="camera-error-box">
@@ -144,21 +162,16 @@
             </div>
           </div>
 
-          <!-- HUD: Top Right Quick Overlays -->
+          <!-- HUD: Top Right Quick Overlays (Snapchat Vertical Rail on Mobile) -->
           <div class="hud-top-right">
-            <button class="viewport-quick-btn" id="btn-quick-mirror" title="Toggle Mirror (M)" aria-label="Toggle Mirror">
+            <button class="viewport-quick-btn" id="btn-quick-flip-cam" title="Switch Front / Rear Camera (C)" aria-label="Switch Camera">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="16 3 21 3 21 8"/>
-                <line x1="4" y1="20" x2="21" y2="3"/>
-                <polyline points="21 16 21 21 16 21"/>
-                <line x1="15" y1="15" x2="21" y2="21"/>
-                <line x1="4" y1="4" x2="9" y2="9"/>
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
               </svg>
             </button>
-            <button class="viewport-quick-btn" id="btn-quick-flipv" title="Flip Vertical" aria-label="Flip Vertical">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 10l5-5 5 5M7 14l5 5 5-5"/>
-              </svg>
+            <button class="viewport-quick-btn mobile-only" id="btn-quick-timer-hud" title="Timer (Off / 3s / 5s / 10s)" aria-label="Timer">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="hud-btn-badge" id="hud-timer-badge">Off</span>
             </button>
             <button class="viewport-quick-btn" id="btn-quick-grid" title="Composition Grid (G)" aria-label="Composition Grid">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -169,13 +182,34 @@
                 <line x1="3" y1="15" x2="21" y2="15"/>
               </svg>
             </button>
-            <button class="viewport-quick-btn" id="btn-quick-pip" title="Picture-in-Picture" aria-label="Picture in Picture">
+            <button class="viewport-quick-btn mobile-only" id="btn-quick-tools-hud" title="Camera Adjustments & Filters" aria-label="Tools">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+                <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+              </svg>
+            </button>
+            <button class="viewport-quick-btn mobile-hide" id="btn-quick-mirror" title="Toggle Mirror (M)" aria-label="Toggle Mirror">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 3 21 3 21 8"/>
+                <line x1="4" y1="20" x2="21" y2="3"/>
+                <polyline points="21 16 21 21 16 21"/>
+                <line x1="15" y1="15" x2="21" y2="21"/>
+                <line x1="4" y1="4" x2="9" y2="9"/>
+              </svg>
+            </button>
+            <button class="viewport-quick-btn mobile-hide" id="btn-quick-flipv" title="Flip Vertical" aria-label="Flip Vertical">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 10l5-5 5 5M7 14l5 5 5-5"/>
+              </svg>
+            </button>
+            <button class="viewport-quick-btn mobile-hide" id="btn-quick-pip" title="Picture-in-Picture" aria-label="Picture in Picture">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="4" width="20" height="16" rx="2"/>
                 <rect x="12" y="10" width="8" height="6" rx="1"/>
               </svg>
             </button>
-            <button class="viewport-quick-btn" id="btn-quick-fullscreen" title="Fullscreen (F)" aria-label="Fullscreen">
+            <button class="viewport-quick-btn mobile-hide" id="btn-quick-fullscreen" title="Fullscreen (F)" aria-label="Fullscreen">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
               </svg>
@@ -201,91 +235,122 @@
             </button>
           </div>
 
-          <!-- STUDIO CAPTURE BAR (Docked Directly INSIDE the Camera Viewport at Bottom) -->
-          <div class="studio-capture-bar">
+          <!-- STUDIO CAPTURE BAR (Snapchat Lens & Capture Cockpit) -->
+          <div class="studio-capture-bar" id="studio-capture-bar">
 
+            <!-- Top Pill: Mode Selector Bar (Centered directly above lenses) -->
+            <div class="capture-mode-bar">
+              <div class="mode-selector" role="tablist" aria-label="Capture Modes">
+                <button class="mode-btn active" id="mode-photo" role="tab" aria-selected="true" title="Photo Mode (1)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                  <span>Photo</span>
+                </button>
+                <button class="mode-btn" id="mode-video" role="tab" aria-selected="false" title="Video Mode (2)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                  </svg>
+                  <span>Video</span>
+                </button>
+                <button class="mode-btn" id="mode-burst" role="tab" aria-selected="false" title="Burst Mode (3)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="8" y="2" width="13" height="13" rx="2"/>
+                    <path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/>
+                  </svg>
+                  <span>Burst</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- SNAPCHAT LENS CAROUSEL STRIP (Swipeable horizontal lenses) -->
+            <div class="snapchat-lens-carousel-wrap" id="snapchat-lens-carousel-wrap">
+              <div class="lens-carousel-track" id="lens-carousel-track" role="region" aria-label="Snapchat Lens Carousel">
+                <!-- Dynamically populated with Snapchat circular lens badges -->
+              </div>
+            </div>
+
+            <!-- PRIMARY INTERACTION COCKPIT -->
             <div class="capture-main-deck">
 
-              <!-- Left Wing: Recent Thumb + Timer + Mode Selector -->
+              <!-- Left Action: Gallery Thumb & Timer -->
               <div class="deck-wing deck-left">
-                <button class="stage-recent-thumb-btn" id="btn-stage-recent-thumb" title="Open Latest Capture in Gallery" aria-label="Latest capture preview">
+                <button class="stage-recent-thumb-btn" id="btn-stage-recent-thumb" title="Open Memories / Gallery" aria-label="Latest capture preview">
                   <div class="stage-thumb-inner" id="stage-thumb-inner">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                       <circle cx="8.5" cy="8.5" r="1.5"/>
                       <polyline points="21 15 16 10 5 21"/>
                     </svg>
                   </div>
+                  <span class="gallery-count-badge" id="deck-gallery-count">0</span>
                 </button>
 
-                <button class="stage-action-pill" id="stage-badge-timer" title="Countdown Timer (Click: Off / 3s / 5s / 10s)">
+                <button class="stage-action-pill mobile-hide" id="stage-badge-timer" title="Countdown Timer (Click: Off / 3s / 5s / 10s)">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   <span><strong id="label-timer-val">Off</strong></span>
                 </button>
-
-                <div class="mode-selector" role="tablist" aria-label="Capture Modes">
-                  <button class="mode-btn active" id="mode-photo" role="tab" aria-selected="true" title="Photo Mode (1)">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                      <circle cx="12" cy="13" r="4"/>
-                    </svg>
-                    <span>Photo</span>
-                  </button>
-                  <button class="mode-btn" id="mode-video" role="tab" aria-selected="false" title="Video Mode (2)">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polygon points="23 7 16 12 23 17 23 7"/>
-                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                    </svg>
-                    <span>Video</span>
-                  </button>
-                  <button class="mode-btn" id="mode-burst" role="tab" aria-selected="false" title="Burst Mode (3)">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="8" y="2" width="13" height="13" rx="2"/>
-                      <path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/>
-                    </svg>
-                    <span>Burst</span>
-                  </button>
-                </div>
               </div>
 
-              <!-- Center Hero: Shutter & Record Button (Compact Size) -->
-              <div class="capture-controls-group">
-                <button class="btn-capture-shutter" id="btn-capture-shutter" title="Take Photo (Space)" aria-label="Take Photo">
-                  <div class="shutter-inner"></div>
-                </button>
-
-                <button class="btn-record-trigger hidden" id="btn-record-trigger" title="Start Recording (R)" aria-label="Start Recording">
-                  <div class="record-inner"></div>
-                </button>
-
-                <button class="btn-record-pause hidden" id="btn-record-pause" title="Pause / Resume Recording (P)" aria-label="Pause Recording">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="4" width="4" height="16"/>
-                    <rect x="14" y="4" width="4" height="16"/>
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Right Wing: Filters Strip + Burst Count + Tune Tools -->
-              <div class="deck-wing deck-right">
-                <div class="filter-strip-wrapper">
-                  <div class="filter-presets-bar" id="filter-presets-bar">
-                    <!-- Dynamically populated filter chips -->
+              <!-- Center: Primary Camera Shutter (Single Snapchat Unified Button) -->
+              <div class="capture-controls-group" id="snap-shutter-wrap">
+                <!-- Floating Snapchat Slide to Lock Pill (Appears above shutter when holding to record) -->
+                <div class="snap-lock-pill hidden" id="snap-lock-pill" title="Slide up to lock recording">
+                  <div class="lock-icon-wrap" id="lock-icon-wrap">
+                    <svg class="lock-unlocked-svg" id="lock-unlocked-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+                    </svg>
+                    <svg class="lock-locked-svg hidden" id="lock-locked-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
                   </div>
+                  <span class="lock-label" id="lock-label">Slide to Lock</span>
+                  <div class="lock-chevron-anim" id="lock-chevron">&uarr;</div>
                 </div>
 
-                <button class="stage-action-pill hidden" id="stage-badge-burst" title="Burst Count (Click: 3x / 5x / 10x)">
+                <!-- Circular SVG Progress Ring for Recording Time -->
+                <svg class="shutter-progress-ring" id="shutter-progress-ring" viewBox="0 0 92 92">
+                  <circle class="progress-ring-bg" cx="46" cy="46" r="41" fill="none" stroke-width="4"/>
+                  <circle class="progress-ring-fill" id="progress-ring-fill" cx="46" cy="46" r="41" fill="none" stroke-width="4" stroke-dasharray="257.6" stroke-dashoffset="257.6"/>
+                </svg>
+
+                <!-- Single Unified Shutter Trigger -->
+                <button class="btn-capture-shutter" id="btn-capture-shutter" title="Tap: Photo | Hold: Video | Slide up: Lock" aria-label="Take Photo or Hold to Record Video">
+                  <div class="shutter-inner" id="shutter-inner"></div>
+                </button>
+              </div>
+
+              <!-- Right Action: Explore Lenses (Search), Flip Camera, Tune Drawer -->
+              <div class="deck-wing deck-right">
+                <button class="stage-action-pill btn-explore-pill btn-snap-explore" id="btn-explore-lenses" title="Explore Lenses & Search Filters">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <span class="mobile-hide">Lenses</span>
+                </button>
+
+                <button class="stage-action-pill hidden mobile-hide" id="stage-badge-burst" title="Burst Count (Click: 3x / 5x / 10x)">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="13" height="13" rx="2"/><path d="M5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
                   <span><strong id="stage-burst-count-label">3x</strong></span>
                 </button>
 
-                <button class="stage-action-pill" id="btn-open-tools-deck" title="Open Adjustments & Devices">
+                <button class="stage-action-pill mobile-hide" id="btn-flip-facing-deck" title="Flip Front / Rear Camera" aria-label="Flip Camera">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+                  </svg>
+                </button>
+
+                <button class="stage-action-pill mobile-hide" id="btn-open-tools-deck" title="Open Adjustments & Devices">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
                     <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
                     <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
                   </svg>
-                  <span>Tune</span>
                 </button>
               </div>
 
@@ -302,6 +367,7 @@
     <!-- TOOLS SLIDE-OUT DRAWER BACKDROP & DRAWER -->
     <div class="inspector-backdrop hidden" id="inspector-backdrop"></div>
     <aside class="studio-inspector drawer-closed" id="studio-inspector" aria-label="Studio Control Console">
+        <div class="drawer-drag-handle" aria-hidden="true"></div>
 
         <!-- Inspector Header -->
         <div class="inspector-header">
@@ -310,7 +376,7 @@
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
-            <span>Studio Tools</span>
+            <span>Camera Tools</span>
           </div>
           <button class="modal-close-btn" id="btn-close-inspector" aria-label="Close Studio Tools">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -506,11 +572,19 @@
 
       </aside> <!-- /studio-inspector -->
 
-    <!-- MEDIA GALLERY SECTION -->
+    <!-- MEDIA GALLERY SECTION (Snapchat Memories Bottom Sheet on Mobile) -->
     <section class="gallery-section" id="gallery" aria-label="Media Gallery">
+      <!-- Mobile Pull Drag Handle & Close Button -->
+      <div class="gallery-sheet-top-bar mobile-only">
+        <div class="gallery-sheet-handle" id="gallery-sheet-handle"></div>
+        <button class="modal-close-btn btn-close-gallery-sheet" id="btn-close-gallery-sheet" aria-label="Close Memories">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
       <div class="gallery-header">
         <div class="gallery-title-group">
-          <h2>Media Gallery</h2>
+          <h2>Memories <span class="gallery-title-subtitle mobile-hide">& Gallery</span></h2>
         </div>
 
         <div class="gallery-tabs">
@@ -575,12 +649,55 @@
     </div>
   </div>
 
+  <!-- Snapchat Lens Explorer Modal / Sheet -->
+  <div class="modal-dialog hidden" id="modal-lens-explorer" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" id="backdrop-lens-explorer"></div>
+    <div class="modal-content-box lens-explorer-box">
+      <div class="modal-header lens-explorer-header">
+        <div class="lens-explorer-title">
+          <!-- Snapchat Ghost Icon -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFC00" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17l-2 1s-1 .5-1 1.5S6 21 6 21h12s1-.5 1-1.5S18 19 18 19l-2-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.87-3.13-7-7-7z"/>
+          </svg>
+          <h3>Snapchat Lenses</h3>
+        </div>
+        <button class="modal-close-btn" id="btn-close-lens-explorer" aria-label="Close Lens Explorer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="lens-search-bar">
+        <div class="lens-search-input-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="search" id="lens-search-input" placeholder="Search lenses by name, mood, aesthetic..." autocomplete="off" />
+          <button class="lens-search-clear hidden" id="btn-clear-lens-search" aria-label="Clear Search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categories Filter Tabs -->
+      <div class="lens-categories-bar" id="lens-categories-bar">
+        <!-- Rendered dynamically from FILTER_CATEGORIES -->
+      </div>
+
+      <!-- Row-wise / Grid Lens Cards Container -->
+      <div class="lens-explorer-grid" id="lens-explorer-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
   <!-- Settings Modal -->
   <div class="modal-dialog hidden" id="modal-settings" role="dialog" aria-modal="true">
     <div class="modal-backdrop" id="backdrop-settings"></div>
     <div class="modal-content-box">
       <div class="modal-header">
-        <h3>Studio Settings</h3>
+        <h3>Snapchat Camera Settings</h3>
         <button class="modal-close-btn" id="btn-close-settings" aria-label="Close Settings">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
@@ -701,8 +818,8 @@
   <!-- Footer -->
   <footer class="app-footer">
     <div class="footer-container">
-      <p><strong>Pro Webcam Studio</strong> &bull; Local Camera & Recording</p>
-      <p style="font-size: 0.8rem; color: var(--text-muted);">&copy; Pro Webcam Studio</p>
+      <p><strong>Snapchat Camera</strong> &bull; Real-time Lenses, Filters & Memories</p>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">&copy; Snapchat Web Camera</p>
     </div>
   </footer>
 
