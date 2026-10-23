@@ -21,6 +21,20 @@ import { showToast } from './modules/toast.js';
 import { playRecordStartSound, playRecordStopSound } from './modules/audio.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Clear any legacy service workers and stale caches
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+  if ('caches' in window) {
+    caches.keys().then((names) => {
+      names.forEach((name) => caches.delete(name));
+    });
+  }
+
   // Load persistent user settings
   let settings = loadSettings();
 
