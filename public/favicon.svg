@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="favRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="#0a0d14"/>
+  <circle cx="16" cy="16" r="11" fill="none" stroke="url(#favRing)" stroke-width="2"/>
+  <circle cx="16" cy="16" r="8" fill="#131926"/>
+  <circle cx="16" cy="16" r="4" fill="#38bdf8"/>
+  <circle cx="14" cy="14" r="1.5" fill="#ffffff" opacity="0.8"/>
+  <circle cx="25" cy="7" r="2" fill="#ef4444"/>
+</svg>

@@ -7,6 +7,17 @@
   <meta name="theme-color" content="#0a0d14" />
   <title>Pro Webcam Studio — High-Definition Camera & Recording</title>
 
+  <!-- PWA & Mobile Web Meta Tags -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Webcam Studio" />
+  <meta name="application-name" content="Webcam Studio" />
+
   <!-- Google Fonts: Outfit & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,6 +48,16 @@
       </div>
 
       <div class="header-actions">
+        <!-- PWA Install Button -->
+        <button class="btn btn-primary hidden" id="btn-install-pwa" title="Install Webcam Studio App">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span id="btn-install-text">Install App</span>
+        </button>
+
         <button class="btn btn-secondary" id="btn-open-tools" title="Camera Tools & Adjustments">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"/>

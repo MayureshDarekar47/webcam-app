@@ -16,6 +16,7 @@ A modern, high-definition webcam web application built from scratch with native 
 - **Composition Grids**: Rule of Thirds (3×3), Golden Ratio, Center Crosshairs, and Square (1:1) framing.
 - **Local Gallery**: Persistent storage using IndexedDB. Preview in full-screen Lightbox, download media, copy photos to clipboard, and batch clear.
 - **100% Privacy**: No cloud backend, zero server transmission. Everything runs locally inside your browser.
+- **Progressive Web App (PWA)**: Fully installable as a standalone app on Windows, Mac, Android, and iOS. Works 100% offline with complete service worker caching.
 - **Keyboard Shortcuts**: Hotkeys for rapid shooting (`Space`, `R`, `P`, `M`, `G`, `F`, `C`, `B`, `Esc`).
 
 ---

@@ -21,17 +21,63 @@ import { showToast } from './modules/toast.js';
 import { playRecordStartSound, playRecordStopSound } from './modules/audio.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Clear any legacy service workers and stale caches
+  // Register Progressive Web App (PWA) Service Worker
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      for (const registration of registrations) {
-        registration.unregister();
-      }
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then((registration) => {
+          console.log('[PWA] Service Worker registered with scope:', registration.scope);
+
+          registration.addEventListener('updatefound', () => {
+            const installingWorker = registration.installing;
+            if (installingWorker) {
+              installingWorker.addEventListener('statechange', () => {
+                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showToast('App update available! Refresh to update.', 'info', 5000);
+                }
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.warn('[PWA] Service Worker registration failed:', error);
+        });
     });
   }
-  if ('caches' in window) {
-    caches.keys().then((names) => {
-      names.forEach((name) => caches.delete(name));
+
+  // PWA Install Prompt handling
+  let deferredInstallPrompt = null;
+  const btnInstallPwa = document.getElementById('btn-install-pwa');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  if (btnInstallPwa && !isStandalone) {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      btnInstallPwa.classList.remove('hidden');
+    });
+
+    btnInstallPwa.addEventListener('click', async () => {
+      if (!deferredInstallPrompt) {
+        showToast('To install, use browser menu (Install app / Add to Home screen)', 'info', 4000);
+        return;
+      }
+      deferredInstallPrompt.prompt();
+      const { outcome } = await deferredInstallPrompt.userChoice;
+      if (outcome === 'accepted') {
+        showToast('Installing Pro Webcam Studio...', 'success', 3000);
+      }
+      deferredInstallPrompt = null;
+      btnInstallPwa.classList.add('hidden');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      showToast('Pro Webcam Studio installed as an app!', 'success', 4000);
+      if (btnInstallPwa) {
+        btnInstallPwa.classList.add('hidden');
+      }
+      deferredInstallPrompt = null;
     });
   }
 
@@ -727,6 +773,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   modePhotoBtn.addEventListener('click', () => setMode('photo'));
   modeVideoBtn.addEventListener('click', () => setMode('video'));
   modeBurstBtn.addEventListener('click', () => setMode('burst'));
+
+  // Handle URL shortcut params (e.g. /?mode=video from PWA shortcuts)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialMode = urlParams.get('mode');
+    if (initialMode && ['photo', 'video', 'burst'].includes(initialMode)) {
+      setMode(initialMode);
+    }
+  } catch (e) {
+    // Ignore URL parse error
+  }
 
   /* Camera Actions */
 

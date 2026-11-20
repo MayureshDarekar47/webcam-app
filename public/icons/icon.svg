@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e131f"/>
+      <stop offset="50%" stop-color="#0a0d14"/>
+      <stop offset="100%" stop-color="#05070a"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <radialGradient id="lensReflect" cx="35%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#0284c7" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)"/>
+  <rect width="510" height="510" x="1" y="1" rx="107" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+
+  <!-- Glowing Accent Ring -->
+  <circle cx="256" cy="256" r="172" fill="none" stroke="url(#ringGrad)" stroke-width="8" opacity="0.4" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="170" fill="none" stroke="url(#ringGrad)" stroke-width="6"/>
+
+  <!-- Lens Outer Rim -->
+  <circle cx="256" cy="256" r="148" fill="#131926" stroke="#1e293b" stroke-width="4"/>
+
+  <!-- Camera Body Silhouette / Aperture -->
+  <circle cx="256" cy="256" r="120" fill="url(#lensReflect)"/>
+
+  <!-- Inner Iris Ring -->
+  <circle cx="256" cy="256" r="76" fill="#080c14" stroke="#38bdf8" stroke-width="3" opacity="0.9"/>
+
+  <!-- Aperture Center Pupil -->
+  <circle cx="256" cy="256" r="42" fill="#020617"/>
+
+  <!-- Specular Lens Highlights -->
+  <ellipse cx="220" cy="216" rx="28" ry="16" transform="rotate(-30 220 216)" fill="#ffffff" opacity="0.6"/>
+  <circle cx="286" cy="292" r="8" fill="#38bdf8" opacity="0.8"/>
+  <circle cx="298" cy="304" r="4" fill="#a5f3fc" opacity="0.9"/>
+
+  <!-- Live Recording Indicator Dot -->
+  <circle cx="376" cy="136" r="14" fill="#ef4444"/>
+  <circle cx="376" cy="136" r="22" fill="#ef4444" opacity="0.3"/>
+
+  <!-- PRO HD Badge Label -->
+  <rect x="186" y="408" width="140" height="34" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="256" y="431" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" letter-spacing="3" text-anchor="middle">PRO HD</text>
+</svg>
